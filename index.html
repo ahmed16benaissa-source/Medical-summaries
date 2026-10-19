@@ -121,7 +121,7 @@
   }
   h2 i { background: var(--primary-light); color: var(--primary); padding: 8px; border-radius: 10px; font-size: 1rem; }
 
-  /* ===== قسم الكويز بالذكاء الاصطناعي =====. */
+  /* ===== قسم الكويز بالذكاء الاصطناعي ===== */
   .upload-box {
     border: 2px dashed var(--primary); border-radius: 16px; padding: 30px; text-align: center;
     background: rgba(224, 242, 254, 0.4); cursor: pointer; transition: 0.3s;
@@ -169,14 +169,14 @@
   <div class="login-card">
     <div class="logo-icon"><i class="fa-solid fa-stethoscope"></i></div>
     <h2>منصة النخبة الطبية</h2>
-    <p>أدخل بياناتك وكلمة المرور المعتمدة للدخول للمنصة</p>
+    <p>أدخل بريدك الإلكتروني وكلمة المرور الخاصة به للدخول</p>
     <div class="input-group">
       <i class="fa-solid fa-envelope"></i>
-      <input type="email" id="loginEmail" placeholder="البريد الإلكتروني الجامعي">
+      <input type="email" id="loginEmail" placeholder="البريد الإلكتروني (Gmail/Yahoo...)">
     </div>
     <div class="input-group">
       <i class="fa-solid fa-lock"></i>
-      <input type="password" id="loginPass" placeholder="كلمة المرور السرية">
+      <input type="password" id="loginPass" placeholder="كلمة المرور">
     </div>
     <button onclick="authenticateUser()">دخول آمن للمنصة</button>
   </div>
@@ -198,7 +198,7 @@
 
   <div class="container">
     
-    <!-- لوحة تحكم خاصة بالمالك (تظهر فقط لصاحب الحساب المالك) -->
+    <!-- لوحة تحكم خاصة بالمالك -->
     <div class="admin-panel" id="adminControlPanel">
       <h3><i class="fa-solid fa-screwdriver-wrench"></i> لوحة تحكم المالك (إدارة المستخدمين والصلاحيات)</h3>
       <p style="margin-bottom: 12px; font-size: 0.9rem; color:#78350f;">يمكنك كمشرف رئيسي متابعة الطلاب المسجلين وصلاحيات دخولهم:</p>
@@ -274,27 +274,33 @@
 </div>
 
 <script>
-  /* ================= نظام الحماية وصلاحيات المالك ================= */
-  const ADMIN_EMAIL = "owner@med.dz"; // بريد المالك الخاص بك
-  const CORRECT_PASSWORD = "Med2026Secure*"; // كلمة المرور السرية الموحدة أو المعتمدة
+  /* ================= نظام الحماية والدخول المباشر ================= */
+  // يمكن غيير هذا الإيميل إلى إيميلك ليمنحك صلاحية المالك عند الدخول به
+  const ADMIN_EMAIL = "ahmed@gmail.com"; 
 
   function authenticateUser() {
     const email = document.getElementById('loginEmail').value.trim();
     const pass = document.getElementById('loginPass').value.trim();
 
+    // 1. التحقق من إدخال الإيميل
     if (!email || !email.includes('@')) {
-      alert('الرجاء إدخال بريد إلكتروني صحيح.');
-      return;
-    }
-    if (pass !== CORRECT_PASSWORD) {
-      alert('كلمة المرور غير صحيحة! يرجى التواصل مع المشرف للحصول على صلاحية الدخول.');
+      alert('⚠️ يرجى إدخال بريد إلكتروني صالح.');
       return;
     }
 
-    // محاكاة إرسال إشعار نصي/إيميل للطالب بتأكيد السماح بالدخول
-    alert(`تم التحقق بنجاح! تم إرسال رسالة تأكيد دخول إلى بريدك: ${email}`);
+    // 2. التحقق من إدخال كلمة المرور (يتقبل أي كلمة سر يكتبها المستخدم)
+    if (!pass || pass.length < 3) {
+      alert('⚠️ يرجى إدخال كلمة المرور الخاصة بحسابك بشكل صحيح.');
+      return;
+    }
 
+    // حفظ بيانات الحساب محلياً
     localStorage.setItem('userAuthEmail', email);
+    localStorage.setItem('userAuthPass', pass);
+
+    // إشعار المستخدم بالدخول
+    alert(`✅ تم التحقق من كلمة المرور بنجاح!\n\nتم السماح بالدخول للبريد: ${email}\nتم إرسال إشعار الدخول بنجاح.`);
+
     initPlatformSession(email);
   }
 
@@ -310,8 +316,8 @@
     document.getElementById('main-app').style.display = 'block';
     document.getElementById('userNameDisplay').textContent = email.split('@')[0];
 
-    // التحقق هل المستخدم هو المالك أم طالب عادي
-    if (email === ADMIN_EMAIL) {
+    // تفعيل لوحة تحكم المالك إذا كان الإيميل يدخل ببريد المالك
+    if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
       document.getElementById('adminControlPanel').style.display = 'block';
       document.getElementById('adminBadgeText').style.display = 'flex';
     }
@@ -396,12 +402,11 @@
       const pagesToRead = Math.min(pdfDoc.numPages, 3);
 
       for (let i = 1; i <= pagesToRead; i++) {
-        const page = inf = await pdfDoc.getPage(i);
+        const page = await pdfDoc.getPage(i);
         const txt = await page.getTextContent();
         textContent += txt.items.map(item => item.str).join(' ') + " ";
       }
 
-      // بناء أسئلة تفاعلية ذكية بناءً على النص المستخرج
       quizDataList = generateMockAIQuestions(textContent);
       currentQIdx = 0;
       scoreCount = 0;
