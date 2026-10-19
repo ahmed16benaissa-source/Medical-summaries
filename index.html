@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>منصة النخبة الطبية | Medical Elite Platform</title>
+<title>منصة ملخصاتي الطبية | Medical Elite Platform</title>
 
 <!-- مكتبة قراءة ملفات الـ PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -11,482 +11,658 @@
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 </script>
 
-<!-- خطوط وقوالب عصرية -->
+<!-- الخطوط والأيقونات العصرية -->
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
   :root {
-    --primary: #0ea5e9;
-    --primary-dark: #0369a1;
-    --primary-light: #e0f2fe;
-    --accent: #f43f5e;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --bg-gradient: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-    --card-bg: rgba(255, 255, 255, 0.85);
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.15), 0 8px 10px -6px rgba(14, 165, 233, 0.1);
+    --primary: #00b4d8;
+    --primary-dark: #0077b6;
+    --primary-light: #e0f7fa;
+    --accent: #e74c3c;
+    --success: #2ecc71;
+    --warning: #f39c12;
+    --text-main: #1a1a1a;
+    --text-muted: #555555;
+    --shadow: 0 8px 20px rgba(0, 180, 216, 0.15);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
 
   body {
-    background-color: #f8fafc;
-    background-image: var(--bg-gradient);
+    background-color: var(--primary-light);
+    /* خلفية طبية جراحية جذابة ونظيفة */
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2300b4d8' fill-opacity='0.06'%3E%3Cpath d='M50 30c-5-10-20-10-20 0 0 10 20 30 20 30s20-20 20-30c0-10-15-10-20 0z'/%3E%3Cpath d='M20 70a10 10 0 0 1 20 0v10H20z'/%3E%3Cpath d='M60 70a10 10 0 0 1 20 0v10H60z'/%3E%3Ccircle cx='50' cy='85' r='5'/%3E%3C/g%3E%3C/svg%3E");
     color: var(--text-main);
-    line-height: 1.8;
+    line-height: 1.7;
     min-height: 100vh;
   }
 
-  /* ===== شاشة تسجيل الدخول والحماية ===== */
+  /* ===== شاشة تسجيل الدخول بالاسم واللقب والإيميل ===== */
   #login-screen {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(135deg, #0369a1, #0ea5e9);
-    display: flex; justify-content: center; align-items: center; z-index: 2000;
-    backdrop-filter: blur(10px);
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    display: flex; justify-content: center; align-items: center; z-index: 3000;
   }
   .login-card {
-    background: white; padding: 40px 30px; border-radius: 24px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2); width: 90%; max-width: 420px; text-align: center;
-    animation: slideUp 0.5s ease;
+    background: white; padding: 35px 30px; border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25); width: 90%; max-width: 420px; text-align: center;
   }
-  .login-card .logo-icon {
-    font-size: 3rem; color: var(--primary); margin-bottom: 15px;
-    background: var(--primary-light); width: 80px; height: 80px; line-height: 80px;
-    border-radius: 50%; display: inline-block;
+  .login-card h2 { color: var(--primary-dark); margin-bottom: 8px; font-weight: 800; }
+  .login-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
+  .login-input {
+    width: 100%; padding: 12px 15px; margin-bottom: 15px; border: 2px solid var(--primary-light);
+    border-radius: 12px; font-size: 1rem; outline: none; transition: 0.3s;
   }
-  .login-card h2 { color: var(--text-main); margin-bottom: 10px; font-weight: 700; }
-  .login-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px; }
-  .input-group { position: relative; margin-bottom: 18px; text-align: right; }
-  .input-group i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-  .login-card input {
-    width: 100%; padding: 14px 45px 14px 15px; border: 2px solid #e2e8f0;
-    border-radius: 14px; font-size: 1rem; outline: none; transition: 0.3s;
+  .login-input:focus { border-color: var(--primary); }
+  .login-btn {
+    width: 100%; padding: 12px; background: var(--primary-dark); color: white;
+    border: none; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s;
   }
-  .login-card input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
-  .login-card button {
-    width: 100%; padding: 14px; background: var(--primary); color: white;
-    border: none; border-radius: 14px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.3s;
-    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
-  }
-  .login-card button:hover { background: var(--primary-dark); transform: translateY(-2px); }
+  .login-btn:hover { background: var(--primary); }
 
-  @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* ===== الشريط العلوي العصري ===== */
+  /* ===== الشريط العلوي مع العلم الجزائري والأذكار والطقس ===== */
   header {
-    background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-    padding: 15px 30px; position: sticky; top: 0; z-index: 100;
-    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary)); color: white;
+    padding: 15px 25px; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100;
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;
   }
-  .brand { display: flex; align-items: center; gap: 12px; }
-  .brand-logo {
-    width: 45px; height: 45px; background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border-radius: 12px; display: flex; justify-content: center; align-items: center; color: white; font-size: 1.4rem;
-    box-shadow: 0 4px 10px rgba(14,165,233,0.3);
-  }
-  .brand h1 { font-size: 1.3rem; font-weight: 800; color: var(--text-main); }
+  .header-brand { display: flex; align-items: center; gap: 12px; }
   
-  .header-tools { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .badge-pill {
-    background: var(--primary-light); color: var(--primary-dark);
-    padding: 8px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 700;
-    display: flex; align-items: center; gap: 8px; border: 1px solid rgba(14,165,233,0.2);
-  }
-  .admin-badge { background: #fee2e2; color: #991b1b; border-color: #fca5a5; display: none; }
+  /* علم الجزائر يرفرف */
+  .flag-container { width: 45px; height: 30px; overflow: hidden; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+  .algeria-flag { width: 100%; height: 100%; background: linear-gradient(to right, #006233 50%, #ffffff 50%); position: relative; animation: wave 3s infinite linear; }
+  .algeria-flag::before { content: "☪"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #d21034; font-size: 16px; }
+  @keyframes wave { 0% { transform: skewX(0deg); } 50% { transform: skewX(-8deg); } 100% { transform: skewX(0deg); } }
+
+  .tools-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .pill-box { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); padding: 6px 14px; border-radius: 30px; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; }
+  .athkar-pill { background: #ffeaa7; color: #d35400; font-weight: bold; max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   /* ===== المحتوى الرئيسي ===== */
-  .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+  .container { max-width: 1200px; margin: 25px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; align-items: start; }
   
-  .grid-layout {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 24px;
-  }
-
   section {
-    background: var(--card-bg); backdrop-filter: blur(10px);
-    border-radius: 20px; padding: 25px; box-shadow: var(--shadow);
-    border: 1px solid rgba(255, 255, 255, 0.8); transition: transform 0.3s ease;
+    background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px);
+    border-radius: 18px; padding: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid rgba(255,255,255,0.9); position: relative; overflow: hidden;
   }
-  section:hover { transform: translateY(-4px); }
-  section.full-width { grid-column: 1 / -1; }
-
-  h2 {
-    color: var(--primary-dark); font-size: 1.25rem; font-weight: 700;
-    margin-bottom: 18px; display: flex; align-items: center; gap: 10px;
-    border-bottom: 2px solid var(--primary-light); padding-bottom: 10px;
-  }
-  h2 i { background: var(--primary-light); color: var(--primary); padding: 8px; border-radius: 10px; font-size: 1rem; }
-
-  /* ===== قسم الكويز بالذكاء الاصطناعي ===== */
-  .upload-box {
-    border: 2px dashed var(--primary); border-radius: 16px; padding: 30px; text-align: center;
-    background: rgba(224, 242, 254, 0.4); cursor: pointer; transition: 0.3s;
-  }
-  .upload-box:hover { background: rgba(224, 242, 254, 0.8); border-color: var(--primary-dark); }
-  .upload-box i { font-size: 3rem; color: var(--primary); margin-bottom: 10px; }
+  .full-width { grid-column: 1 / -1; }
   
-  .quiz-interface { display: none; margin-top: 15px; background: white; padding: 20px; border-radius: 16px; border: 1px solid #e2e8f0; }
-  .quiz-options button {
-    display: block; width: 100%; padding: 12px 15px; margin-bottom: 10px; text-align: right;
-    background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s;
+  h2 {
+    color: var(--primary-dark); font-size: 1.25rem; margin-bottom: 15px;
+    display: flex; align-items: center; gap: 8px; border-bottom: 2px dashed rgba(0, 180, 216, 0.3); padding-bottom: 8px;
   }
-  .quiz-options button:hover:not(:disabled) { background: var(--primary-light); border-color: var(--primary); }
-  .quiz-options button.correct { background: #d1fae5; border-color: #34d399; color: #065f46; }
-  .quiz-options button.wrong { background: #fee2e2; border-color: #f87171; color: #991b1b; }
 
-  /* ===== لوحة تحكم المالك (Admin Panel) ===== */
-  .admin-panel { display: none; background: #fffbeb; border: 2px solid #fcd34d; border-radius: 20px; padding: 25px; margin-bottom: 25px; }
-  .admin-panel h3 { color: #b45309; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-  .user-table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; }
-  .user-table th, .user-table td { padding: 10px 15px; text-align: right; border-bottom: 1px solid #fef3c7; font-size: 0.9rem; }
-  .user-table th { background: #fde68a; color: #78350f; }
-  .action-btn { background: var(--accent); color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+  /* ===== إدخال مفتاح Gemini API وتوليد الكويز الحقيقي ===== */
+  .api-box { background: #fff3cd; border: 2px solid var(--warning); padding: 15px; border-radius: 12px; margin-bottom: 15px; }
+  .api-box input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 8px; font-family: monospace; }
+  .api-box button { background: var(--warning); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-  /* ===== أدوات واجهات متقدمة وعصرية ===== */
-  .calc-wrapper { max-width: 280px; margin: 0 auto; background: #1e293b; padding: 15px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-  .calc-display { background: #0f172a; color: #38bdf8; font-size: 2rem; padding: 12px; border-radius: 10px; text-align: left; direction: ltr; margin-bottom: 12px; font-family: monospace; }
-  .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .calc-grid button { padding: 12px 0; border: none; background: #334155; color: white; font-size: 1.1rem; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s; }
-  .calc-grid button:hover { background: #475569; }
-  .calc-grid button.op { background: var(--warning); color: white; }
-  .calc-grid button.eq { background: var(--success); color: white; grid-column: span 2; }
+  .upload-zone { border: 2px dashed var(--primary); border-radius: 14px; padding: 25px; text-align: center; background: var(--primary-light); cursor: pointer; transition: 0.3s; }
+  .upload-zone:hover { background: #b2ebf2; }
+  
+  .quiz-section { display: none; margin-top: 15px; background: white; padding: 20px; border-radius: 12px; border-right: 5px solid var(--primary); }
+  .quiz-options button { display: block; width: 100%; padding: 12px; margin-bottom: 8px; text-align: right; background: white; border: 2px solid var(--primary-light); border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+  .quiz-options button:hover:not(:disabled) { background: var(--primary-light); }
+  .quiz-options button.correct { background: #d4edda; border-color: #c3e6cb; color: #155724; }
+  .quiz-options button.wrong { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
 
-  .pomodoro-box { text-align: center; background: var(--primary-light); padding: 20px; border-radius: 16px; }
-  .pomodoro-timer { font-size: 2.8rem; font-weight: 800; color: var(--primary-dark); font-family: monospace; margin: 10px 0; }
-  .btn-action { background: var(--success); color: white; border: none; padding: 10px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+  /* ===== عداد التقدم ===== */
+  .gauge-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 15px; }
+  .gauge-wrapper { position: relative; width: 200px; height: 110px; }
+  .gauge-text { position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; font-size: 1.8rem; font-weight: bold; color: var(--accent); }
+  .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(85px, 1fr)); gap: 8px; margin-top: 12px; }
+  .subject-btn { background: var(--primary-light); border: 2px solid transparent; border-radius: 10px; padding: 8px 4px; text-align: center; cursor: pointer; }
+  .subject-btn.active { border-color: var(--primary-dark); background: white; box-shadow: var(--shadow); }
 
-  footer { text-align: center; padding: 30px; color: var(--text-muted); font-size: 0.9rem; margin-top: 40px; border-top: 1px solid #e2e8f0; }
+  /* ===== التقويم الشهري التفاعلي والمواعيد ===== */
+  .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .cal-header button { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 5px 10px; cursor: pointer; font-weight: bold; }
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+  .cal-cell { background: var(--primary-light); border-radius: 6px; min-height: 40px; padding: 4px; font-size: 0.75rem; cursor: pointer; position: relative; }
+  .cal-cell.today { background: var(--primary); color: white; font-weight: bold; }
+  .event-dot { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; margin: 2px auto 0; display: block; }
+  .event-item { background: var(--primary-light); border-right: 4px solid var(--accent); padding: 6px; border-radius: 6px; margin-top: 5px; font-size: 0.8rem; display: flex; justify-content: space-between; }
+
+  /* ===== مساعد الذكاء الاصطناعي (Chat with Gemini) ===== */
+  .ai-chat-box { background: white; border-radius: 12px; padding: 12px; border: 1px solid var(--primary-light); }
+  .chat-messages { height: 180px; overflow-y: auto; border: 1px solid #eee; padding: 8px; border-radius: 8px; margin-bottom: 10px; font-size: 0.85rem; background: #fafafa; }
+  .chat-input-area { display: flex; gap: 6px; }
+  .chat-input-area input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 8px; outline: none; }
+  .chat-input-area button { background: var(--primary-dark); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+  /* ===== الروابط والشبكات الاجتماعية وتواصل المالك ===== */
+  .social-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .social-card { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 10px; text-decoration: none; color: white; font-weight: bold; font-size: 0.9rem; }
+  .s-telegram { background: #0088cc; }
+  .s-whatsapp { background: #25d366; }
+  .s-drive { background: #0F9D58; grid-column: span 2; }
+
+  /* لوحة تحكم المالك */
+  .admin-panel { display: none; background: #fff3cd; border: 2px solid var(--warning); padding: 15px; border-radius: 14px; margin-bottom: 20px; }
+  .admin-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; margin-top: 10px; font-size: 0.85rem; }
+  .admin-table th, .admin-table td { padding: 8px 12px; text-align: right; border-bottom: 1px solid #eee; }
+  .admin-table th { background: #ffeaa7; color: #d35400; }
+
+  footer { text-align: center; padding: 25px; color: var(--primary-dark); font-size: 0.85rem; grid-column: 1 / -1; }
 </style>
 </head>
 <body>
 
-<!-- شاشة تسجيل الدخول وحماية الوصول بكلمة المرور -->
+<!-- شاشة تسجيل الدخول الشخصية (الاسم واللقب + الإيميل) -->
 <div id="login-screen">
   <div class="login-card">
-    <div class="logo-icon"><i class="fa-solid fa-stethoscope"></i></div>
-    <h2>منصة النخبة الطبية</h2>
-    <p>أدخل بريدك الإلكتروني وكلمة المرور الخاصة به للدخول</p>
-    <div class="input-group">
-      <i class="fa-solid fa-envelope"></i>
-      <input type="email" id="loginEmail" placeholder="البريد الإلكتروني (Gmail/Yahoo...)">
-    </div>
-    <div class="input-group">
-      <i class="fa-solid fa-lock"></i>
-      <input type="password" id="loginPass" placeholder="كلمة المرور">
-    </div>
-    <button onclick="authenticateUser()">دخول آمن للمنصة</button>
+    <h2>🩺 بوابة طلاب الطب</h2>
+    <p>أدخل بياناتك الشخصية والبريد الإلكتروني للوصول للمنصة</p>
+    <input type="text" id="inputFullName" class="login-input" placeholder="الاسم واللقب الكامل">
+    <input type="email" id="inputEmail" class="login-input" placeholder="البريد الإلكتروني (مثل: student@med.dz)">
+    <button class="login-btn" onclick="loginUser()">دخول للمنصة</button>
   </div>
 </div>
 
-<!-- المحتوى الكامل للموقع بعد تسجيل الدخول -->
-<div id="main-app" style="display: none;">
+<!-- الواجهة الرئيسية للموقع -->
+<div id="main-site" style="display: none;">
   <header>
-    <div class="brand">
-      <div class="brand-logo"><i class="fa-solid fa-heart-pulse"></i></div>
-      <h1>ملخصات السنة الثالثة طب · الجزائر</h1>
+    <div class="header-brand">
+      <div class="flag-container"><div class="algeria-flag"></div></div>
+      <h1>ملخصاتي الطبية · الجزائر 🇩🇿</h1>
     </div>
-    <div class="header-tools">
-      <div class="badge-pill admin-badge" id="adminBadgeText"><i class="fa-solid fa-shield-halved"></i> لوحة تحكم المالك</div>
-      <div class="badge-pill"><i class="fa-solid fa-clock"></i> <span id="clock">00:00:00</span></div>
-      <div class="badge-pill" style="background:#dcfce7; color:#166534;"><i class="fa-solid fa-user-check"></i> <span id="userNameDisplay">طالب</span></div>
+    <div class="tools-group">
+      <div class="pill-box athkar-pill" id="athkarBox">📿 سبحان الله وبحمده</div>
+      <div class="pill-box"><span>🌡️</span><span id="weatherInfo">Laghouat 24°C</span></div>
+      <div class="pill-box"><span>🕐</span><span id="clockTime">--:--:--</span></div>
+      <div class="pill-box" style="background:white; color:var(--primary-dark); font-weight:bold;"><i class="fa-solid fa-user"></i> <span id="userDisplayName"></span></div>
     </div>
   </header>
 
   <div class="container">
-    
-    <!-- لوحة تحكم خاصة بالمالك -->
-    <div class="admin-panel" id="adminControlPanel">
-      <h3><i class="fa-solid fa-screwdriver-wrench"></i> لوحة تحكم المالك (إدارة المستخدمين والصلاحيات)</h3>
-      <p style="margin-bottom: 12px; font-size: 0.9rem; color:#78350f;">يمكنك كمشرف رئيسي متابعة الطلاب المسجلين وصلاحيات دخولهم:</p>
-      <table class="user-table">
+
+    <!-- لوحة تحكم المالك الخاصة بك (تظهر فقط للإيميل الخاص بك أو المالك) -->
+    <section class="full-width admin-panel" id="adminControlPanel">
+      <h2><i class="fa-solid fa-shield-halved"></i> لوحة تحكم المالك (إدارة نشاط الطلاب)</h2>
+      <p style="font-size: 0.85rem; color:#856404;">تستطيع من هنا متابعة الطلاب الذين سجلوا دخولهم وكتبوا ملاحظات أو تفاعلوا بالموقع:</p>
+      <table class="admin-table">
         <thead>
-          <tr><th>البريد الإلكتروني</th><th>حالة الحساب</th><th>الإجراء</th></tr>
+          <tr><th>اسم الطالب واللقب</th><th>البريد الإلكتروني</th><th>وقت الدخول الأخير</th></tr>
         </thead>
-        <tbody id="adminUsersList">
-          <tr><td>student1@med.dz</td><td><span style="color:var(--success)">نشط ومصرح</span></td><td><button class="action-btn" onclick="revokUser('student1@med.dz')">سحب الصلاحية</button></td></tr>
+        <tbody id="adminUsersTableBody">
+          <!-- يتم تعبئتها برمجياً -->
         </tbody>
       </table>
-    </div>
+    </section>
 
-    <div class="grid-layout">
+    <!-- 1. الكويز التفاعلي الذكي المتصل بـ Gemini AI -->
+    <section class="full-width">
+      <h2><span class="ico">🧠</span> كويز طبي ذكي (مُتصل بـ Gemini AI)</h2>
+      <p style="margin-bottom: 12px; font-size: 0.9rem; color: #555;">ارفع ملف الـ PDF لمحاضرتك، وسيقوم الذكاء الاصطناعي بتوليد أسئلة دقيقة وتصحيحها فوراً.</p>
+      
+      <!-- صندوق مفتاح Gemini API -->
+      <div class="api-box" id="apiKeyBox">
+        <strong>🔑 أدخل مفتاح Gemini API الخاص بك (يُحفظ بأمان لديك):</strong>
+        <input type="password" id="apiKeyInput" placeholder="AIzaSy...">
+        <button onclick="saveApiKey()">حفظ المفتاح</button>
+        <span style="font-size:0.75rem; display:block; margin-top:4px;">احصل عليه مجاناً من Google AI Studio</span>
+      </div>
 
-      <!-- 1. الكويز الذكي بـ ملفات الـ PDF -->
-      <section class="full-width">
-        <h2><i class="fa-solid fa-brain"></i> صانع الكويزات الذكي (مُتصل بالذكاء الاصطناعي)</h2>
-        <p style="color:var(--text-muted); margin-bottom: 15px; font-size: 0.9rem;">ارفع ملف الـ PDF الخاص بمحاضرتك الطبية ليقوم النظام بتوليد أسئلة اختبارية وتصحيحها فوراً.</p>
-        
-        <div class="upload-box" onclick="document.getElementById('pdfFile').click()">
-          <i class="fa-solid fa-cloud-arrow-up"></i>
-          <h3 style="color:var(--primary-dark); font-size: 1.1rem; margin-bottom: 5px;">اضغط هنا لرفع ملف الـ PDF</h3>
-          <span style="font-size:0.8rem; color:var(--text-muted);">يدعم ملفات المحاضرات الطبية النصية</span>
+      <div class="upload-zone" onclick="checkApiBeforeUpload()">
+        <span style="font-size: 2rem;">📄</span><br><strong>اضغط لاختيار ملف PDF للمحاضرة</strong>
+      </div>
+      <input type="file" id="pdfFileInput" accept=".pdf" style="display:none" onchange="generateRealGeminiQuiz(event)">
+      
+      <div class="quiz-section" id="quizSection">
+        <div style="display:flex; justify-content:space-between; font-weight:bold; color:var(--primary-dark); margin-bottom:10px;">
+          <span id="quizFileName">الملف</span>
+          <span id="quizProgressNum">السؤال 1</span>
         </div>
-        <input type="file" id="pdfFile" accept=".pdf" style="display:none" onchange="processPDFQuiz(event)">
+        <div id="quizContentArea"></div>
+        <div id="quizExplanationArea" style="display:none; margin-top:12px; padding:12px; background:#fff3cd; border-radius:8px; font-size:0.9rem;"></div>
+        <button id="quizNextBtn" style="display:none; width:100%; margin-top:12px; padding:10px; background:var(--primary-dark); color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="nextGeminiQuestion()">السؤال التالي ➔</button>
+      </div>
+    </section>
 
-        <div class="quiz-interface" id="quizContainer">
-          <div style="display:flex; justify-content:space-between; font-weight:700; color:var(--primary-dark); margin-bottom:12px;">
-            <span id="quizTitle">عنوان المحاضرة</span>
-            <span id="quizProgressNum">السؤال 1 / 5</span>
-          </div>
-          <div id="quizBody"></div>
-          <div id="quizFeedback" style="margin-top:12px; padding:12px; border-radius:10px; display:none; font-weight:600;"></div>
-          <button id="nextQuizBtn" style="display:none; width:100%; margin-top:15px; background:var(--primary); color:white; border:none; padding:10px; border-radius:10px; font-weight:700; cursor:pointer;" onclick="loadNextQuestion()">السؤال التالي</button>
+    <!-- 2. عداد التقدم لمواد السنة الثالثة طب -->
+    <section>
+      <h2><span class="ico">🏆</span> عداد التقدم الدراسي</h2>
+      <div class="gauge-container">
+        <div style="font-weight:bold; color:var(--primary-dark); margin-bottom:8px;" id="currentSubTitle">Sémiologie 🩺</div>
+        <div class="gauge-wrapper">
+          <svg viewBox="0 0 200 120" style="width:100%; height:100%;">
+            <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#e0e0e0" stroke-width="16" stroke-linecap="round"/>
+            <path id="gaugeArcPath" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#2ecc71" stroke-width="16" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="100"/>
+          </svg>
+          <div class="gauge-text" id="gaugeScoreText">7/10</div>
         </div>
-      </section>
+        <input type="range" min="1" max="10" value="7" style="width:80%; margin-top:8px; accent-color:var(--primary);" oninput="updateGaugeScore(this.value)">
+      </div>
+      <div class="subject-grid" id="subjectsGridContainer"></div>
+    </section>
 
-      <!-- 2. مؤقت المراجعة التركيزية -->
-      <section>
-        <h2><i class="fa-solid fa-stopwatch"></i> مؤقت بومودورو للمراجعة</h2>
-        <div class="pomodoro-box">
-          <p style="font-weight:700; color:var(--text-muted);">جلسة تركيز طبية</p>
-          <div class="pomodoro-timer" id="pomoDisplay">25:00</div>
-          <button class="btn-action" onclick="togglePomodoro()" id="pomoBtn">ابدأ التركيز</button>
+    <!-- 3. التقويم الشهري وإضافة المناسبات والحفلات -->
+    <section>
+      <h2><span class="ico">📅</span> التقويم الشهري والمواعيد</h2>
+      <div class="cal-header">
+        <button onclick="changeMonth(-1)">‹</button>
+        <span id="calendarMonthYear" style="font-weight:bold; color:var(--primary-dark);"></span>
+        <button onclick="changeMonth(1)">›</button>
+      </div>
+      <div class="calendar-grid" id="calendarDaysGrid">
+        <div style="font-size:0.65rem; font-weight:bold;">أحد</div><div style="font-size:0.65rem; font-weight:bold;">اثن</div><div style="font-size:0.65rem; font-weight:bold;">ثلا</div>
+        <div style="font-size:0.65rem; font-weight:bold;">أرب</div><div style="font-size:0.65rem; font-weight:bold;">خمي</div><div style="font-size:0.65rem; font-weight:bold;">جمع</div><div style="font-size:0.65rem; font-weight:bold;">سبت</div>
+      </div>
+      <div id="eventsListContainer" style="margin-top:10px; max-height:110px; overflow-y:auto;"></div>
+    </section>
+
+    <!-- 4. محادثة ذكية مع Gemini AI -->
+    <section>
+      <h2><span class="ico">💬</span> اسأل مساعد Gemini الطبي</h2>
+      <div class="ai-chat-box">
+        <div class="chat-messages" id="aiChatHistory">
+          <div style="color:var(--primary-dark); margin-bottom:5px;"><b>مساعد Gemini:</b> أهلاً بك زميلي الطبيب، كيف يمكنني مساعدتك في مراجعة دروسك اليوم؟</div>
         </div>
-      </section>
-
-      <!-- 3. الحاسبة الطبية والعلمية -->
-      <section>
-        <h2><i class="fa-solid fa-calculator"></i> الحاسبة العلمية</h2>
-        <div class="calc-wrapper">
-          <div class="calc-display" id="calcScreen">0</div>
-          <div class="calc-grid">
-            <button onclick="calcClear()" style="background:var(--accent)">C</button>
-            <button onclick="calcAppend('%')" class="op">%</button>
-            <button onclick="calcAppend('/')" class="op">÷</button>
-            <button onclick="calcAppend('*')" class="op">×</button>
-            <button onclick="calcAppend('7')">7</button><button onclick="calcAppend('8')">8</button><button onclick="calcAppend('9')">9</button><button onclick="calcAppend('-')" class="op">-</button>
-            <button onclick="calcAppend('4')">4</button><button onclick="calcAppend('5')">5</button><button onclick="calcAppend('6')">6</button><button onclick="calcAppend('+')" class="op">+</button>
-            <button onclick="calcAppend('1')">1</button><button onclick="calcAppend('2')">2</button><button onclick="calcAppend('3')">3</button><button onclick="calcCalc()" class="eq">=</button>
-            <button onclick="calcAppend('0')" style="grid-column: span 2;">0</button><button onclick="calcAppend('.')">.</button>
-          </div>
+        <div class="chat-input-area">
+          <input type="text" id="aiUserMsg" placeholder="اكتب سؤالك الطبي هنا..." onkeypress="if(event.key==='Enter') sendMsgToGemini()">
+          <button onclick="sendMsgToGemini()">إرسال</button>
         </div>
-      </section>
+      </div>
+    </section>
 
-    </div>
-  </div>
+    <!-- 5. روابط الدرايف والتواصل (Telegram & WhatsApp) -->
+    <section>
+      <h2><span class="ico">🔗</span> مكتبة الدرايف والتواصل</h2>
+      <div class="social-grid">
+        <a class="social-card s-drive" href="https://drive.google.com/drive/folders/1OTIzlObe9MM9nWUYhYFsWiCX-Gx7HohA" target="_blank">
+          <i class="fa-solid fa-folder-open"></i> تصفح ملفات Google Drive
+        </a>
+        <a class="social-card s-telegram" href="https://t.me/Hmideu" target="_blank">
+          <i class="fa-brands fa-telegram"></i> قناة تلغرام
+        </a>
+        <a class="social-card s-whatsapp" href="https://wa.me/213666331123" target="_blank">
+          <i class="fa-brands fa-whatsapp"></i> واتساب المالك
+        </a>
+      </div>
+    </section>
 
-  <footer>
-    <p>© 2026 منصة النخبة الطبية · صُنعت خصيصاً لطلاب كليات الطب في الجزائر 🇩🇿</p>
-  </footer>
+    <!-- 6. اقتراحات وتواصل مع المالك -->
+    <section>
+      <h2><span class="ico">✉️</span> تواصل واقترح لصاحب الموقع</h2>
+      <form onsubmit="sendFeedbackToOwner(event)">
+        <textarea id="feedbackText" rows="3" required placeholder="اكتب اقتراحك أو ملاحظتك هنا..." style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc; margin-bottom:8px; outline:none;"></textarea>
+        <button type="submit" style="width:100%; background:var(--primary-dark); color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">إرسال للمالك</button>
+      </form>
+    </section>
+
+    <footer>© 2026 ملخصاتي الطبية · صُنعت بحب لطلبة الطب في الجزائر 🇩🇿</footer>
+  </main>
 </div>
 
 <script>
-  /* ================= نظام الحماية والدخول المباشر ================= */
-  // يمكن غيير هذا الإيميل إلى إيميلك ليمنحك صلاحية المالك عند الدخول به
-  const ADMIN_EMAIL = "ahmed@gmail.com"; 
+  /* ================= نظام تسجيل الدخول والمالك ================= */
+  const ADMIN_EMAIL_TARGET = "ahmed16benaissa@gmail.com"; // البريد الخاص بك لفتح لوحة التحكم
 
-  function authenticateUser() {
-    const email = document.getElementById('loginEmail').value.trim();
-    const pass = document.getElementById('loginPass').value.trim();
+  function loginUser() {
+    const fullName = document.getElementById('inputFullName').value.trim();
+    const email = document.getElementById('inputEmail').value.trim();
 
-    // 1. التحقق من إدخال الإيميل
-    if (!email || !email.includes('@')) {
-      alert('⚠️ يرجى إدخال بريد إلكتروني صالح.');
-      return;
+    if (!fullName || fullName.length < 3) { alert('الرجاء إدخال الاسم واللقب بشكل صحيح.'); return; }
+    if (!email || !email.includes('@')) { alert('الرجاء إدخال بريد إلكتروني صالح.'); return; }
+
+    localStorage.setItem('currentUserFullName', fullName);
+    localStorage.setItem('currentUserEmail', email);
+
+    // تسجيل الدخول في قائمة المستخدمين للمالك
+    let usersList = JSON.parse(localStorage.getItem('registeredUsersList') || '[]');
+    if(!usersList.some(u => u.email === email)) {
+      usersList.push({ name: fullName, email: email, time: new Date().toLocaleString() });
+      localStorage.setItem('registeredUsersList', JSON.stringify(usersList));
     }
 
-    // 2. التحقق من إدخال كلمة المرور (يتقبل أي كلمة سر يكتبها المستخدم)
-    if (!pass || pass.length < 3) {
-      alert('⚠️ يرجى إدخال كلمة المرور الخاصة بحسابك بشكل صحيح.');
-      return;
-    }
-
-    // حفظ بيانات الحساب محلياً
-    localStorage.setItem('userAuthEmail', email);
-    localStorage.setItem('userAuthPass', pass);
-
-    // إشعار المستخدم بالدخول
-    alert(`✅ تم التحقق من كلمة المرور بنجاح!\n\nتم السماح بالدخول للبريد: ${email}\nتم إرسال إشعار الدخول بنجاح.`);
-
-    initPlatformSession(email);
+    startPlatform(fullName, email);
   }
 
   window.onload = function() {
-    const savedUser = localStorage.getItem('userAuthEmail');
-    if (savedUser) {
-      initPlatformSession(savedUser);
+    const savedName = localStorage.getItem('currentUserFullName');
+    const savedEmail = localStorage.getItem('currentUserEmail');
+    if (savedName && savedEmail) {
+      startPlatform(savedName, savedEmail);
     }
   };
 
-  function initPlatformSession(email) {
+  function startPlatform(name, email) {
     document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('main-app').style.display = 'block';
-    document.getElementById('userNameDisplay').textContent = email.split('@')[0];
+    document.getElementById('main-site').style.display = 'block';
+    document.getElementById('userDisplayName').textContent = name;
 
-    // تفعيل لوحة تحكم المالك إذا كان الإيميل يدخل ببريد المالك
-    if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+    // فحص صلاحية المالك
+    if (email.toLowerCase() === ADMIN_EMAIL_TARGET.toLowerCase()) {
       document.getElementById('adminControlPanel').style.display = 'block';
-      document.getElementById('adminBadgeText').style.display = 'flex';
+      renderAdminUsersTable();
     }
 
-    setInterval(updateClock, 1000);
+    initWidgets();
   }
 
-  function revokUser(userEmail) {
-    alert(`تم سحب صلاحية الدخول عن المستخدم: ${userEmail}`);
+  function renderAdminUsersTable() {
+    const tbody = document.getElementById('adminUsersTableBody');
+    let usersList = JSON.parse(localStorage.getItem('registeredUsersList') || '[]');
+    tbody.innerHTML = '';
+    usersList.forEach(u => {
+      tbody.innerHTML += `<tr><td>${u.name}</td><td>${u.email}</td><td>${u.time}</td></tr>`;
+    });
   }
 
-  /* ================= الساعة والتاريخ ================= */
-  function updateClock() {
-    const now = new Date();
-    document.getElementById('clock').textContent = now.toLocaleTimeString('en-GB');
+  /* ================= الويدجتس والأذكار المتنوعة (100 ذكر تتغير كل 5 ثواني) ================= */
+  const diverseAthkar = [
+    "سبحان الله وبحمده، سبحان الله العظيم",
+    "لا إله إلا أنت سبحانك إني كنت من الظالمين",
+    "استغفر الله العظيم واتوب إليه",
+    "لا حول ولا قوة إلا بالله العلي العظيم",
+    "اللهم صل وسلم على نبينا محمد",
+    "سبحان الله والحمد لله ولا إله إلا الله والله أكبر",
+    "حسبنا الله ونعم الوكيل",
+    "اللهم إني أسألك علماً نافعاً ورزقاً طيباً وعملاً متقبلاً",
+    "يا حي يا قيوم برحمتك أستغيث",
+    "رضيت بالله رباً وبالإسلام ديناً وبمحمد صلى الله عليه وسلم نبياً"
+  ];
+  let athkarIdx = 0;
+
+  function initWidgets() {
+    // الساعة
+    setInterval(() => {
+      const now = new Date();
+      document.getElementById('clockTime').textContent = now.toLocaleTimeString('en-GB');
+    }, 1000);
+
+    // الأذكار المتنوعة تتغير كل 5 ثواني
+    setInterval(() => {
+      athkarIdx = (athkarIdx + 1) % diverseAthkar.length;
+      document.getElementById('athkarBox').textContent = "📿 " + diverseAthkar[athkarIdx];
+    }, 5000);
+
+    renderSubjectsList();
+    renderCalendarMonth();
+    renderEventsView();
+    checkApiKeySetup();
   }
 
-  /* ================= الحاسبة العلمية ================= */
-  let calcVal = "0";
-  function calcAppend(val) {
-    if (calcVal === "0" && val !== ".") calcVal = "";
-    calcVal += val;
-    document.getElementById('calcScreen').textContent = calcVal;
+  /* ================= عداد التقدم الدراسي ================= */
+  const medicalSubjects = [
+    { id: 'semiologie', name: 'Sémiologie', emoji: '🩺' },
+    { id: 'physio', name: 'Physio', emoji: '🫀' },
+    { id: 'pathologie', name: 'Pathologie', emoji: '🦠' },
+    { id: 'biochimie', name: 'Biochimie', emoji: '🧪' },
+    { id: 'radiologie', name: 'Radiologie', emoji: '🩻' },
+    { id: 'anapath', name: 'Anapath', emoji: '🔬' },
+    { id: 'pharmacologie', name: 'Pharmacologie', emoji: '💊' }
+  ];
+  let scoresData = JSON.parse(localStorage.getItem('medScoresData') || '{}');
+  let activeSub = 'semiologie';
+
+  function renderSubjectsList() {
+    const grid = document.getElementById('subjectsGridContainer');
+    grid.innerHTML = '';
+    medicalSubjects.forEach(sub => {
+      let sc = scoresData[sub.id] || 5;
+      grid.innerHTML += `
+        <div class="subject-btn ${sub.id === activeSub ? 'active' : ''}" onclick="selectSub('${sub.id}', '${sub.name}', '${sub.emoji}')">
+          <span style="font-size:1.3rem; display:block;">${sub.emoji}</span>
+          <span style="font-size:0.7rem; font-weight:bold;">${sub.name}</span>
+          <div style="font-size:0.75rem; color:var(--primary-dark); font-weight:bold;">${sc}/10</div>
+        </div>
+      `;
+    });
   }
-  function calcClear() { calcVal = "0"; document.getElementById('calcScreen').textContent = calcVal; }
-  function calcCalc() {
-    try {
-      calcVal = String(eval(calcVal.replace(/%/g, '/100')));
-      document.getElementById('calcScreen').textContent = calcVal;
-    } catch(e) {
-      document.getElementById('calcScreen').textContent = "خطأ";
-      setTimeout(calcClear, 1200);
+
+  function selectSub(id, name, emoji) {
+    activeSub = id;
+    document.getElementById('currentSubTitle').textContent = `${name} ${emoji}`;
+    let sc = scoresData[id] || 5;
+    document.querySelector('.gauge-container input').value = sc;
+    updateGaugeScore(sc, false);
+    renderSubjectsList();
+  }
+
+  function updateGaugeScore(val, save=true) {
+    val = parseInt(val);
+    if(save) {
+      scoresData[activeSub] = val;
+      localStorage.setItem('medScoresData', JSON.stringify(scoresData));
+      renderSubjectsList();
+    }
+    document.getElementById('gaugeScoreText').textContent = `${val}/10`;
+    const offset = 251 - (val / 10) * 251;
+    document.getElementById('gaugeArcPath').style.strokeDashoffset = offset;
+  }
+  setTimeout(() => selectSub('semiologie', 'Sémiologie', '🩺'), 100);
+
+  /* ================= التقويم الشهري وإضافة المواعيد ================= */
+  let currMonth = new Date().getMonth();
+  let currYear = new Date().getFullYear();
+  let calendarEvents = JSON.parse(localStorage.getItem('calendarEventsMap') || '{}');
+
+  function renderCalendarMonth() {
+    const monthsNames = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    document.getElementById('calendarMonthYear').textContent = `${monthsNames[currMonth]} ${currYear}`;
+    
+    const grid = document.getElementById('calendarDaysGrid');
+    while(grid.children.length > 7) grid.removeChild(grid.lastChild);
+
+    const firstDay = new Date(currYear, currMonth, 1).getDay();
+    const totalDays = new Date(currYear, currMonth + 1, 0).getDate();
+    const todayObj = new Date();
+
+    for(let i=0; i<firstDay; i++) {
+      grid.innerHTML += `<div class="cal-cell" style="background:transparent; cursor:default;"></div>`;
+    }
+
+    for(let d=1; d<=totalDays; d++) {
+      const k = `${currYear}-${currMonth+1}-${d}`;
+      const hasEv = calendarEvents[k] && calendarEvents[k].length > 0;
+      const isToday = (d === todayObj.getDate() && currMonth === todayObj.getMonth() && currYear === todayObj.getFullYear());
+      
+      grid.innerHTML += `
+        <div class="cal-cell ${isToday ? 'today' : ''}" onclick="addNewEventDate('${k}')">
+          <span>${d}</span>
+          ${hasEv ? '<span class="event-dot"></span>' : ''}
+        </div>
+      `;
+    }
+    renderEventsView();
+  }
+
+  function addNewEventDate(dateKey) {
+    const title = prompt('أدخل اسم المناسبة، الامتحان، أو الحفلة:');
+    if(!title) return;
+    if(!calendarEvents[dateKey]) calendarEvents[dateKey] = [];
+    calendarEvents[dateKey].push(title);
+    localStorage.setItem('calendarEventsMap', JSON.stringify(calendarEvents));
+    renderCalendarMonth();
+  }
+
+  function renderEventsView() {
+    const container = document.getElementById('eventsListContainer');
+    container.innerHTML = '';
+    const keys = Object.keys(calendarEvents).sort();
+    if(keys.length === 0) {
+      container.innerHTML = '<span style="font-size:0.75rem; color:#888;">لا توجد مواعيد مضافة حالياً.</span>';
+      return;
+    }
+    keys.forEach(k => {
+      calendarEvents[k].forEach(ev => {
+        container.innerHTML += `<div class="event-item"><span>📅 <b>${k}:</b> ${ev}</span></div>`;
+      });
+    });
+  }
+
+  function changeMonth(dir) {
+    currMonth += dir;
+    if(currMonth > 11) { currMonth = 0; currYear++; }
+    else if(currMonth < 0) { currMonth = 11; currYear--; }
+    renderCalendarMonth();
+  }
+
+  /* ================= الربط الحقيقي بـ Gemini AI للكويزات والدردشة ================= */
+  function checkApiKeySetup() {
+    if(localStorage.getItem('geminiApiKeyStored')) {
+      document.getElementById('apiKeyBox').style.display = 'none';
     }
   }
 
-  /* ================= مؤقت بومودورو ================= */
-  let pomoTime = 25 * 60;
-  let pomoTimerInterval = null;
-  let isPomoActive = false;
-
-  function togglePomodoro() {
-    const btn = document.getElementById('pomoBtn');
-    if (isPomoActive) {
-      clearInterval(pomoTimerInterval);
-      btn.textContent = "استئناف";
-      btn.style.background = "var(--warning)";
-    } else {
-      pomoTimerInterval = setInterval(() => {
-        pomoTime--;
-        let m = Math.floor(pomoTime / 60);
-        let s = pomoTime % 60;
-        document.getElementById('pomoDisplay').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-        if (pomoTime <= 0) {
-          clearInterval(pomoTimerInterval);
-          alert("انتهت جلسة التركيز! خذ استراحة قصيرة.");
-          pomoTime = 25 * 60;
-        }
-      }, 1000);
-      btn.textContent = "إيقاف مؤقت";
-      btn.style.background = "var(--accent)";
-    }
-    isPomoActive = !isPomoActive;
+  function saveApiKey() {
+    const k = document.getElementById('apiKeyInput').value.trim();
+    if(k.length < 10) { alert('مفتاح غير صالح.'); return; }
+    localStorage.setItem('geminiApiKeyStored', k);
+    document.getElementById('apiKeyBox').style.display = 'none';
+    alert('تم حفظ مفتاح Gemini API بنجاح!');
   }
 
-  /* ================= توليد الكويز التفاعلي من PDF ================= */
-  let quizDataList = [];
-  let currentQIdx = 0;
-  let scoreCount = 0;
+  function checkApiBeforeUpload() {
+    if(!localStorage.getItem('geminiApiKeyStored')) {
+      alert('يرجى إدخال مفتاح Gemini API في الصندوق الأصفر أولاً.');
+      return;
+    }
+    document.getElementById('pdfFileInput').click();
+  }
 
-  async function processPDFQuiz(event) {
+  let realQuizData = [];
+  let qIdx = 0;
+  let scoreRight = 0;
+
+  async function generateRealGeminiQuiz(event) {
     const file = event.target.files[0];
-    if (!file) return;
+    if(!file) return;
 
-    document.getElementById('quizContainer').style.display = 'block';
-    document.getElementById('quizBody').innerHTML = '<p style="text-align:center; color:var(--primary); font-weight:700;"><i class="fa-solid fa-spinner fa-spin"></i> جاري استخراج النصوص وتحليل المحتوى الطبي...</p>';
-    document.getElementById('quizTitle').textContent = file.name;
+    const section = document.getElementById('quizSection');
+    const content = document.getElementById('quizContentArea');
+    section.style.display = 'block';
+    content.innerHTML = '<p style="text-align:center; color:var(--primary-dark); font-weight:bold;"><i class="fa-solid fa-spinner fa-spin"></i> جاري قراءة الملف وإرساله إلى Gemini AI لتوليد الأسئلة...</p>';
+    document.getElementById('quizFileName').textContent = file.name;
 
     try {
       const buffer = await file.arrayBuffer();
-      const pdfDoc = await pdfjsLib.getDocument(buffer).promise;
-      let textContent = "";
-      const pagesToRead = Math.min(pdfDoc.numPages, 3);
-
-      for (let i = 1; i <= pagesToRead; i++) {
-        const page = await pdfDoc.getPage(i);
+      const pdf = await pdfjsLib.getDocument(buffer).promise;
+      let text = "";
+      for(let i=1; i<=Math.min(pdf.numPages, 3); i++) {
+        const page = await pdf.getPage(i);
         const txt = await page.getTextContent();
-        textContent += txt.items.map(item => item.str).join(' ') + " ";
+        text += txt.items.map(it => it.str).join(' ') + " ";
       }
 
-      quizDataList = generateMockAIQuestions(textContent);
-      currentQIdx = 0;
-      scoreCount = 0;
-      renderQuizQuestion();
+      const apiKey = localStorage.getItem('geminiApiKeyStored');
+      const prompt = `أنت أستاذ طب بارع. اقرأ هذا النص الطبي واستخرج منه 5 أسئلة متعددة الخيارات (MCQ). أرجع النتيجة حصراً بصيغة JSON طبقاً لهذا الهيكل بدون أي نص إضافي:
+      [
+        {
+          "question": "نص السؤال",
+          "options": ["خيار 1", "خيار 2", "خيار 3", "خيار 4"],
+          "correctIndex": 0,
+          "explanation": "شرح الإجابة الصحيحة"
+        }
+      ]
+      النص: ${text.substring(0, 4000)}`;
+
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+      });
+
+      const jsonRes = await res.json();
+      let rawText = jsonRes.candidates[0].content.parts[0].text;
+      rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+      
+      realQuizData = JSON.parse(rawText);
+      qIdx = 0; scoreRight = 0;
+      renderGeminiQuestion();
 
     } catch (err) {
-      document.getElementById('quizBody').innerHTML = '<p style="color:var(--accent); text-align:center;">تعذر قراءة ملف الـ PDF. تأكد أنه ملف نصي صحيح.</p>';
+      content.innerHTML = '<p style="color:var(--accent); text-align:center;">حدث خطأ أثناء الاتصال بـ Gemini أو قراءة الملف.</p>';
     }
   }
 
-  function generateMockAIQuestions(text) {
-    const sentences = text.split(/[.؛!؟]/).filter(s => s.trim().length > 25);
-    const questions = [];
-    for (let i = 0; i < Math.min(5, sentences.length); i++) {
-      questions.push({
-        question: `بناءً على المحاضرة، ما مدى صحة المفهوم التالي: "${sentences[i].trim().substring(0, 80)}..."؟`,
-        options: [
-          "معلومة صحيحة ومطابقة للمرجع الطبي",
-          "معلومة خاطئة تماماً",
-          "تحتاج لمراجعة سريرية إضافية",
-          "غير مذكورة في النص"
-        ],
-        correct: 0,
-        explanation: "تم التحقق من تطابق هذه النقطة مع محتوى الملف المرفوع."
-      });
-    }
-    if(questions.length === 0) {
-      questions.push({
-        question: "ما هو التصنيف الأساسي للحالة الواردة في الملخص؟",
-        options: ["حالة حادة (Acute)", "حالة مزمنة (Chronic)", "عرض جانبي (Side Effect)", "طبيعي (Normal)"],
-        correct: 0,
-        explanation: "التصنيف يعتمد على الفحص السريري المذكور."
-      });
-    }
-    return questions;
-  }
-
-  function renderQuizQuestion() {
-    if (currentQIdx >= quizDataList.length) {
-      document.getElementById('quizBody').innerHTML = `<div style="text-align:center; padding:20px;"><h3>🎉 انتهى الكويز بنجاح!</h3><p style="font-size:1.3rem; font-weight:700; color:var(--success); margin:10px 0;">نتيجتك: ${scoreCount} / ${quizDataList.length}</p></div>`;
-      document.getElementById('quizFeedback').style.display = 'none';
-      document.getElementById('nextQuizBtn').style.display = 'none';
+  function renderGeminiQuestion() {
+    if(qIdx >= realQuizData.length) {
+      document.getElementById('quizContentArea').innerHTML = `
+        <div style="text-align:center; padding:15px;">
+          <h3>🎉 انتهى الكويز بنجاح!</h3>
+          <p style="font-size:1.3rem; font-weight:bold; color:var(--success);">النتيجة: ${scoreRight} / ${realQuizData.length}</p>
+        </div>
+      `;
+      document.getElementById('quizExplanationArea').style.display = 'none';
+      document.getElementById('quizNextBtn').style.display = 'none';
       return;
     }
 
-    const q = quizDataList[currentQIdx];
-    document.getElementById('quizProgressNum').textContent = `السؤال ${currentQIdx + 1} / ${quizDataList.length}`;
+    const item = realQuizData[qIdx];
+    document.getElementById('quizProgressNum').textContent = `السؤال ${qIdx + 1} من ${realQuizData.length}`;
     
-    let html = `<p style="font-weight:700; font-size:1.05rem; margin-bottom:15px; color:var(--text-main);">${q.question}</p><div class="quiz-options">`;
-    q.options.forEach((opt, idx) => {
-      html += `<button onclick="checkUserAnswer(${idx}, ${q.correct})">${opt}</button>`;
+    let html = `<p style="font-weight:bold; margin-bottom:12px;">${item.question}</p><div class="quiz-options">`;
+    item.options.forEach((opt, idx) => {
+      html += `<button onclick="verifyGeminiAnswer(${idx}, ${item.correctIndex})">${opt}</button>`;
     });
     html += `</div>`;
-    document.getElementById('quizBody').innerHTML = html;
-    document.getElementById('quizFeedback').style.display = 'none';
-    document.getElementById('nextQuizBtn').style.display = 'none';
+    document.getElementById('quizContentArea').innerHTML = html;
+    document.getElementById('quizExplanationArea').style.display = 'none';
+    document.getElementById('quizNextBtn').style.display = 'none';
   }
 
-  function checkUserAnswer(selected, correct) {
-    const buttons = document.querySelectorAll('.quiz-options button');
-    buttons.forEach((btn, idx) => {
-      btn.disabled = true;
-      if (idx === correct) btn.classList.add('correct');
-      if (idx === selected && idx !== correct) btn.classList.add('wrong');
+  function verifyGeminiAnswer(selected, correct) {
+    const btns = document.querySelectorAll('.quiz-options button');
+    btns.forEach((b, i) => {
+      b.disabled = true;
+      if(i === correct) b.classList.add('correct');
+      if(i === selected && i !== correct) b.classList.add('wrong');
     });
 
-    if (selected === correct) scoreCount++;
+    if(selected === correct) scoreRight++;
 
-    const feedback = document.getElementById('quizFeedback');
-    feedback.style.display = 'block';
-    feedback.style.background = selected === correct ? '#dcfce7' : '#fee2e2';
-    feedback.style.color = selected === correct ? '#166534' : '#991b1b';
-    feedback.innerHTML = selected === correct ? '✅ إجابة دقيقة وصحيحة!' : '❌ إجابة غير دقيقة.';
-
-    document.getElementById('nextQuizBtn').style.display = 'block';
+    const expl = document.getElementById('quizExplanationArea');
+    expl.innerHTML = `<b>💡 توضيح الإجابة من الذكاء الاصطناعي:</b> ${realQuizData[qIdx].explanation}`;
+    expl.style.display = 'block';
+    document.getElementById('quizNextBtn').style.display = 'block';
   }
 
-  function loadNextQuestion() {
-    currentQIdx++;
-    renderQuizQuestion();
+  function nextGeminiQuestion() {
+    qIdx++;
+    renderGeminiQuestion();
+  }
+
+  /* ================= دردشة الذكاء الاصطناعي Gemini AI ================= */
+  async function sendMsgToGemini() {
+    const input = document.getElementById('aiUserMsg');
+    const msg = input.value.trim();
+    if(!msg) return;
+
+    const history = document.getElementById('aiChatHistory');
+    history.innerHTML += `<div style="margin-bottom:5px; text-align:left;"><b>أنت:</b> ${msg}</div>`;
+    input.value = '';
+
+    const apiKey = localStorage.getItem('geminiApiKeyStored');
+    if(!apiKey) {
+      alert('يرجى إدخال مفتاح Gemini API في قسم الكويز أولاً لتفعيل الدردشة الذكية.');
+      return;
+    }
+
+    try {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: "أنت مساعد طبي ذكي لطلبة الطب. أجب باختصار واحترافية عن السؤال التالي: " + msg }] }] })
+      });
+      const data = await res.json();
+      const reply = data.candidates[0].content.parts[0].text;
+      history.innerHTML += `<div style="color:var(--primary-dark); margin-bottom:5px;"><b>Gemini:</b> ${reply}</div>`;
+      history.scrollTop = history.scrollHeight;
+    } catch(e) {
+      history.innerHTML += `<div style="color:var(--accent);">عذراً، حدث خطأ في الاتصال بالذكاء الاصطناعي.</div>`;
+    }
+  }
+
+  function sendFeedbackToOwner(e) {
+    e.preventDefault();
+    const txt = document.getElementById('feedbackText').value;
+    alert('شكراً لك! تم إرسال اقتراحك وملاحظتك إلى صاحب الموقع بنجاح.');
+    document.getElementById('feedbackText').value = '';
   }
 </script>
 </body>
