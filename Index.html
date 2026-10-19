@@ -1,0 +1,693 @@
+ممتاز! 🎉 سأضيف لك كل ما طلبت:
+
+· 📅 تقويم دراسي تفاعلي (تستطيع إضافة مواعيد وامتحانات)
+· 🏆 قسم إنجازات مع شريط تقدم
+· 📝 نموذج تواصل يفتح بريدك مباشرة
+· 🔗 روابط حسابات (فيسبوك، إنستغرام، واتساب، تلغرام، GitHub...)
+· 📞 أرقام هواتف قابلة للنقر للاتصال المباشر
+
+إليك الكود الكامل المحدّث (استبدل القديم بهذا):
+
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ملخصاتي الطبية | Medical Summaries</title>
+
+<!-- Google Translate -->
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'ar',
+    includedLanguages: 'ar,fr,en,es,de',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+  }, 'google_translate_element');
+}
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<style>
+  :root {
+    --blue: #0b6fb3;
+    --blue-dark: #084d7d;
+    --green: #1fa97a;
+    --green-light: #e6f7f1;
+    --blue-light: #eaf4fb;
+    --white: #ffffff;
+    --text: #1a1a1a;
+    --shadow: 0 4px 14px rgba(11,111,179,0.12);
+    --red: #e74c3c;
+    --orange: #f39c12;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: linear-gradient(135deg, #f0f8ff 0%, #eefaf4 100%);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ===== شريط علوي ===== */
+  header {
+    background: linear-gradient(90deg, var(--blue-dark), var(--blue), var(--green));
+    color: white;
+    padding: 18px 22px;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  header h1 { font-size: 1.4rem; display: flex; align-items: center; gap: 8px; }
+  header h1::before { content: "🩺"; font-size: 1.6rem; }
+
+  .header-tools { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+  .clock-box {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.35);
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(6px);
+  }
+  .clock-box .time { font-weight: bold; font-size: 1.05rem; letter-spacing: 1px; }
+  .clock-box .city { opacity: 0.85; font-size: 0.8rem; }
+
+  #google_translate_element { background: white; border-radius: 6px; padding: 2px 6px; }
+
+  /* ===== البحث ===== */
+  .search-wrap { padding: 20px 22px 0; max-width: 1100px; margin: auto; }
+  .search-box {
+    display: flex; gap: 8px; background: white; border-radius: 40px;
+    padding: 6px 6px 6px 18px; box-shadow: var(--shadow); align-items: center;
+  }
+  .search-box input {
+    flex: 1; border: none; outline: none; font-size: 1rem;
+    padding: 10px; background: transparent;
+  }
+  .search-box button {
+    background: var(--green); color: white; border: none; border-radius: 30px;
+    padding: 10px 20px; cursor: pointer; font-weight: bold; transition: 0.3s;
+  }
+  .search-box button:hover { background: var(--blue); }
+
+  /* ===== المحتوى ===== */
+  main { max-width: 1100px; margin: auto; padding: 24px 22px 60px; }
+
+  section {
+    background: white; border-radius: 16px; padding: 24px; margin-bottom: 24px;
+    box-shadow: var(--shadow); border-top: 5px solid var(--blue);
+    animation: fadeUp 0.6s ease both;
+  }
+  section.green { border-top-color: var(--green); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  h2 { color: var(--blue-dark); font-size: 1.35rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  h2 .ico { font-size: 1.5rem; }
+  h3 { color: var(--green); margin: 18px 0 8px; font-size: 1.1rem; }
+
+  ul { padding-right: 22px; margin: 8px 0; }
+  li { margin-bottom: 5px; }
+
+  .highlight { background: var(--green-light); border-right: 4px solid var(--green); padding: 10px 14px; border-radius: 8px; margin: 10px 0; }
+  .highlight-blue { background: var(--blue-light); border-right: 4px solid var(--blue); padding: 10px 14px; border-radius: 8px; margin: 10px 0; }
+
+  /* ===== الجداول ===== */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.95rem; border-radius: 10px; overflow: hidden; }
+  th { background: linear-gradient(90deg, var(--blue), var(--green)); color: white; padding: 10px 12px; text-align: right; }
+  td { padding: 9px 12px; border-bottom: 1px solid #e2eef7; }
+  tr:nth-child(even) td { background: #f6fbff; }
+  tr:hover td { background: var(--green-light); transition: 0.2s; }
+
+  /* ===== نصائح ===== */
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 12px; }
+  .tip-card { background: var(--blue-light); border-radius: 12px; padding: 16px; border-left: 4px solid var(--green); transition: transform 0.3s, box-shadow 0.3s; }
+  .tip-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(31,169,122,0.2); }
+  .tip-card .emoji { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+
+  /* ===== التقويم ===== */
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-top: 14px;
+  }
+  .cal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 10px; margin-bottom: 6px;
+  }
+  .cal-header button {
+    background: var(--blue); color: white; border: none; border-radius: 8px;
+    padding: 6px 14px; cursor: pointer; font-weight: bold;
+  }
+  .cal-header button:hover { background: var(--green); }
+  .cal-header .month-year { font-weight: bold; color: var(--blue-dark); font-size: 1.1rem; }
+
+  .cal-day-name {
+    text-align: center; font-size: 0.75rem; color: var(--green);
+    font-weight: bold; padding: 4px 0;
+  }
+  .cal-cell {
+    background: var(--blue-light); border-radius: 8px; min-height: 52px;
+    padding: 4px; font-size: 0.85rem; position: relative; cursor: pointer;
+    transition: 0.2s;
+  }
+  .cal-cell:hover { background: var(--green-light); transform: scale(1.05); }
+  .cal-cell.empty { background: transparent; cursor: default; }
+  .cal-cell.today { background: var(--green); color: white; font-weight: bold; }
+  .cal-cell .num { font-weight: bold; }
+  .cal-cell .event-dot {
+    display: block; width: 6px; height: 6px; background: var(--red);
+    border-radius: 50%; margin-top: 2px;
+  }
+  .event-list { margin-top: 14px; }
+  .event-item {
+    background: var(--blue-light); border-right: 4px solid var(--red);
+    padding: 8px 12px; border-radius: 8px; margin-bottom: 6px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.9rem;
+  }
+  .event-item button {
+    background: var(--red); color: white; border: none; border-radius: 6px;
+    padding: 3px 10px; cursor: pointer; font-size: 0.75rem;
+  }
+
+  /* ===== إنجازات ===== */
+  .achievements { display: grid; gap: 12px; margin-top: 12px; }
+  .ach-item { background: var(--blue-light); border-radius: 10px; padding: 12px 16px; }
+  .ach-item .top { display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 6px; }
+  .ach-item .top strong { color: var(--blue-dark); }
+  .bar {
+    background: #dbeaf6; border-radius: 20px; overflow: hidden; height: 12px;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 20px;
+    background: linear-gradient(90deg, var(--green), var(--blue));
+    transition: width 1.2s ease;
+  }
+
+  /* ===== نموذج تواصل ===== */
+  .contact-form { display: grid; gap: 12px; margin-top: 12px; }
+  .contact-form label { font-weight: bold; color: var(--blue-dark); font-size: 0.9rem; }
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%; padding: 11px 14px; border: 2px solid #d7e8f4;
+    border-radius: 10px; font-family: inherit; font-size: 0.95rem;
+    transition: 0.3s; background: #fafdff;
+  }
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    border-color: var(--green); outline: none;
+    box-shadow: 0 0 0 3px rgba(31,169,122,0.15);
+  }
+  .contact-form textarea { min-height: 110px; resize: vertical; }
+  .contact-form button {
+    background: linear-gradient(90deg, var(--blue), var(--green));
+    color: white; border: none; padding: 12px 24px; border-radius: 10px;
+    font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.3s;
+  }
+  .contact-form button:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+  /* ===== روابط التواصل ===== */
+  .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 12px; }
+  .social-card {
+    display: flex; align-items: center; gap: 10px; padding: 14px;
+    border-radius: 12px; text-decoration: none; color: white;
+    font-weight: bold; transition: 0.3s;
+  }
+  .social-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .social-card .icon { font-size: 1.5rem; }
+  .s-facebook { background: #1877f2; }
+  .s-instagram { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+  .s-whatsapp { background: #25d366; }
+  .s-telegram { background: #0088cc; }
+  .s-github { background: #24292e; }
+  .s-email { background: var(--green); }
+  .s-phone { background: var(--blue); }
+
+  /* ===== إضافة ملفات ===== */
+  .upload-zone {
+    border: 2px dashed var(--green); border-radius: 14px; padding: 30px;
+    text-align: center; background: var(--green-light); cursor: pointer; transition: 0.3s;
+  }
+  .upload-zone:hover { background: #d9f3e9; border-color: var(--blue); }
+  .upload-zone .big { font-size: 2.2rem; display: block; margin-bottom: 8px; }
+  .upload-zone p { color: #555; font-size: 0.9rem; }
+
+  .file-list { margin-top: 14px; }
+  .file-item {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--blue-light); padding: 10px 14px; border-radius: 8px;
+    margin-bottom: 6px; font-size: 0.9rem;
+  }
+  .file-item button { background: var(--red); color: white; border: none; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-size: 0.8rem; }
+
+  /* ===== زر أعلى ===== */
+  .back-top {
+    position: fixed; bottom: 24px; left: 24px; background: var(--green);
+    color: white; width: 46px; height: 46px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; cursor: pointer; box-shadow: var(--shadow);
+    border: none; transition: 0.3s;
+  }
+  .back-top:hover { background: var(--blue); transform: scale(1.1); }
+
+  /* ===== تذييل ===== */
+  footer {
+    text-align: center; padding: 22px; color: #5a7d94; font-size: 0.85rem;
+    border-top: 1px solid #d6e6f2;
+  }
+
+  @media (max-width: 640px) {
+    header { flex-direction: column; align-items: flex-start; }
+    .header-tools { width: 100%; }
+    .clock-box { font-size: 0.8rem; }
+    h2 { font-size: 1.15rem; }
+    .cal-cell { min-height: 44px; font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ======== الشريط العلوي ======== -->
+<header>
+  <h1>ملخصاتي الطبية</h1>
+  <div class="header-tools">
+    <div class="clock-box">
+      <span>🕐</span>
+      <span class="time" id="clock-time">--:--:--</span>
+      <span class="city" id="clock-city">📍</span>
+    </div>
+    <div id="google_translate_element"></div>
+  </div>
+</header>
+
+<!-- ======== البحث ======== -->
+<div class="search-wrap">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="🔍 ابحث في الملخصات...">
+    <button onclick="searchNotes()">بحث</button>
+  </div>
+</div>
+
+<!-- ======== المحتوى ======== -->
+<main>
+
+  <!-- نظرة عامة -->
+  <section>
+    <h2><span class="ico">📋</span> نظرة عامة على الملخصات</h2>
+    <p>هذه الصفحة مخصصة لنشر الملخصات الطبية بطريقة منظمة وسهلة القراءة. تحتوي على ملخصات في <strong>السيميولوجيا</strong> وغيرها من المواد.</p>
+    <div class="highlight-blue">
+      <strong>💡 معلومة:</strong> جميع الملخصات منسقة بشكل واضح مع جداول لتسهيل المراجعة السريعة.
+    </div>
+  </section>
+
+  <!-- السيميولوجيا -->
+  <section class="green">
+    <h2><span class="ico">🩺</span> السيميولوجيا المرضية</h2>
+
+    <h3>1. أنواع الأمراض</h3>
+    <table>
+      <tr><th>النوع</th><th>الوصف</th><th>الأعراض الشائعة</th></tr>
+      <tr><td>مرض حاد</td><td>يظهر بسرعة ويدوم لفترة قصيرة</td><td>حمى، ألم، تعب</td></tr>
+      <tr><td>مرض مزمن</td><td>يدوم طويلاً ويتطور ببطء</td><td>إرهاق مستمر، ألم مزمن</td></tr>
+      <tr><td>مرض وراثي</td><td>ينتقل عبر الجينات</td><td>يعتمد على المرض</td></tr>
+    </table>
+
+    <h3>2. علامات حيوية أساسية</h3>
+    <table>
+      <tr><th>العلامة</th><th>القيمة الطبيعية</th></tr>
+      <tr><td>درجة الحرارة</td><td>36.5 – 37.5 °C</td></tr>
+      <tr><td>النبض</td><td>60 – 100 نبضة/دقيقة</td></tr>
+      <tr><td>ضغط الدم</td><td>120/80 mmHg تقريباً</td></tr>
+      <tr><td>معدل التنفس</td><td>12 – 20 نفس/دقيقة</td></tr>
+    </table>
+
+    <div class="highlight"><strong>📌 ملاحظة:</strong> القيم قد تختلف حسب العمر والجنس والحالة الصحية.</div>
+  </section>
+
+  <!-- التقويم الدراسي -->
+  <section class="green">
+    <h2><span class="ico">📅</span> التقويم الدراسي</h2>
+    <p>اضغط على أي يوم لإضافة موعد أو امتحان. تُحفظ المواعيد في جهازك تلقائياً.</p>
+
+    <div class="cal-header">
+      <button onclick="prevMonth()">‹ السابق</button>
+      <span class="month-year" id="monthYear"></span>
+      <button onclick="nextMonth()">التالي ›</button>
+    </div>
+
+    <div class="calendar-grid" id="calendarGrid">
+      <div class="cal-day-name">أحد</div>
+      <div class="cal-day-name">اثن</div>
+      <div class="cal-day-name">ثلا</div>
+      <div class="cal-day-name">أرب</div>
+      <div class="cal-day-name">خمي</div>
+      <div class="cal-day-name">جمع</div>
+      <div class="cal-day-name">سبت</div>
+    </div>
+
+    <h3>📌 المواعيد القادمة</h3>
+    <div class="event-list" id="eventList"></div>
+  </section>
+
+  <!-- الإنجازات -->
+  <section>
+    <h2><span class="ico">🏆</span> قياس الإنجازات</h2>
+    <p>تابع تقدمك في دراسة المواد المختلفة. تُحفظ النسب في جهازك.</p>
+
+    <div class="achievements" id="achievements"></div>
+  </section>
+
+  <!-- نصائح -->
+  <section class="green">
+    <h2><span class="ico">💡</span> نصائح دراسية</h2>
+    <div class="tips-grid">
+      <div class="tip-card"><span class="emoji">📖</span><strong>اقرأ بانتظام</strong><p>خصص 30 دقيقة يومياً للمراجعة بدلاً من الحفظ في اللحظة الأخيرة.</p></div>
+      <div class="tip-card"><span class="emoji">🧠</span><strong>الخرائط الذهنية</strong><p>استخدم الخرائط الذهنية لربط المعلومات ببعضها.</p></div>
+      <div class="tip-card"><span class="emoji">💤</span><strong>نم جيداً</strong><p>النوم الكافي يحسن الذاكرة والتركيز.</p></div>
+      <div class="tip-card"><span class="emoji">✍️</span><strong>لخّص بنفسك</strong><p>كتابة الملخص بيدك يثبت المعلومة أكثر من قراءتها فقط.</p></div>
+    </div>
+  </section>
+
+  <!-- نموذج تواصل -->
+  <section>
+    <h2><span class="ico">📝</span> تواصل معي</h2>
+    <p>أرسل لي رسالة أو اقتراحاً مباشرة إلى بريدي الإلكتروني.</p>
+
+    <form class="contact-form" onsubmit="sendMessage(event)">
+      <div>
+        <label for="name">الاسم</label>
+        <input type="text" id="name" placeholder="اسمك الكامل" required>
+      </div>
+      <div>
+        <label for="email">البريد الإلكتروني</label>
+        <input type="email" id="email" placeholder="example@email.com" required>
+      </div>
+      <div>
+        <label for="msg">الرسالة</label>
+        <textarea id="msg" placeholder="اكتب رسالتك هنا..." required></textarea>
+      </div>
+      <button type="submit">📤 إرسال الرسالة</button>
+    </form>
+  </section>
+
+  <!-- روابط التواصل -->
+  <section class="green">
+    <h2><span class="ico">🔗</span> روابط التواصل</h2>
+    <p>اضغط على أي بطاقة للتواصل معي مباشرة.</p>
+
+    <div class="social-grid">
+      <!-- ✏️ غيّر الروابط والأرقام هنا -->
+      <a class="social-card s-facebook" href="https://facebook.com/username" target="_blank">
+        <span class="icon">📘</span> فيسبوك
+      </a>
+      <a class="social-card s-instagram" href="https://instagram.com/username" target="_blank">
+        <span class="icon">📸</span> إنستغرام
+      </a>
+      <a class="social-card s-whatsapp" href="https://wa.me/213XXXXXXXXX" target="_blank">
+        <span class="icon">💬</span> واتساب
+      </a>
+      <a class="social-card s-telegram" href="https://t.me/username" target="_blank">
+        <span class="icon">✈️</span> تلغرام
+      </a>
+      <a class="social-card s-github" href="https://github.com/username" target="_blank">
+        <span class="icon">🐙</span> GitHub
+      </a>
+      <a class="social-card s-email" href="mailto:you@example.com">
+        <span class="icon">✉️</span> البريد
+      </a>
+      <a class="social-card s-phone" href="tel:+213XXXXXXXXX">
+        <span class="icon">📞</span> اتصل بي
+      </a>
+    </div>
+  </section>
+
+  <!-- إضافة ملفات -->
+  <section>
+    <h2><span class="ico">📁</span> إضافة ملخصات جديدة</h2>
+    <p>يمكنك رفع ملخصات جديدة هنا (PDF، صور، نصوص). الملفات تبقى في جهازك فقط.</p>
+
+    <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+      <span class="big">📤</span>
+      <strong>اضغط لاختيار ملف</strong>
+      <p>PDF · DOCX · TXT · صور</p>
+    </div>
+    <input type="file" id="fileInput" multiple style="display:none" onchange="addFiles(event)">
+    <div class="file-list" id="fileList"></div>
+  </section>
+
+</main>
+
+<button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<footer>
+  © <span id="year"></span> ملخصاتي الطبية · صُنعت بحب 💙💚
+</footer>
+
+<script>
+/* ===================== الساعة ===================== */
+function updateClock() {
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  const ss = String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('clock-time').textContent = `${hh}:${mm}:${ss}`;
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const cityMap = {
+    'Africa/Algiers':'الجزائر 🇩🇿','Africa/Casablanca':'الدار البيضاء 🇲🇦',
+    'Africa/Tunis':'تونس 🇹🇳','Africa/Cairo':'القاهرة 🇪🇬','Europe/Paris':'باريس 🇫🇷',
+    'Europe/London':'لندن 🇬🇧','Asia/Riyadh':'الرياض 🇸🇦','Asia/Dubai':'دبي 🇦🇪',
+    'America/New_York':'نيويورك 🇺🇸'
+  };
+  document.getElementById('clock-city').textContent = '📍 ' + (cityMap[tz] || tz);
+}
+setInterval(updateClock, 1000); updateClock();
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ===================== البحث ===================== */
+function searchNotes() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  if (!q) { alert('اكتب كلمة للبحث'); return; }
+  const sections = document.querySelectorAll('section');
+  let found = false;
+  sections.forEach(sec => {
+    if (sec.textContent.toLowerCase().includes(q)) {
+      sec.scrollIntoView({ behavior:'smooth', block:'center' });
+      sec.style.boxShadow = '0 0 0 3px #1fa97a';
+      setTimeout(() => sec.style.boxShadow = '', 2000);
+      found = true;
+    }
+  });
+  if (!found) alert('❌ لم يتم العثور على نتائج');
+}
+document.getElementById('searchInput').addEventListener('keypress', e => {
+  if (e.key === 'Enter') searchNotes();
+});
+
+/* ===================== الملفات ===================== */
+let files = [];
+function addFiles(event) {
+  files = files.concat(Array.from(event.target.files));
+  renderFiles();
+}
+function renderFiles() {
+  const list = document.getElementById('fileList');
+  list.innerHTML = '';
+  files.forEach((f, i) => {
+    const div = document.createElement('div');
+    div.className = 'file-item';
+    div.innerHTML = `<span>📄 ${f.name} (${(f.size/1024).toFixed(1)} KB)</span>
+                     <button onclick="removeFile(${i})">حذف</button>`;
+    list.appendChild(div);
+  });
+}
+function removeFile(i) { files.splice(i,1); renderFiles(); }
+
+/* ===================== التقويم ===================== */
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+
+let events = JSON.parse(localStorage.getItem('events') || '{}');
+function saveEvents() { localStorage.setItem('events', JSON.stringify(events)); }
+
+function renderCalendar() {
+  const grid = document.getElementById('calendarGrid');
+  const monthNames = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  document.getElementById('monthYear').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+  // إزالة الأيام القديمة (مع الحفاظ على أسماء الأيام)
+  while (grid.children.length > 7) grid.removeChild(grid.lastChild);
+
+  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const today = new Date();
+
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'cal-cell empty';
+    grid.appendChild(empty);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cell = document.createElement('div');
+    cell.className = 'cal-cell';
+    const key = `${currentYear}-${currentMonth+1}-${d}`;
+    cell.innerHTML = `<span class="num">${d}</span>`;
+    if (events[key] && events[key].length) {
+      cell.innerHTML += `<span class="event-dot"></span>`;
+    }
+    if (d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+      cell.classList.add('today');
+    }
+    cell.onclick = () => addEvent(key);
+    grid.appendChild(cell);
+  }
+  renderEvents();
+}
+
+function addEvent(key) {
+  const title = prompt('أدخل اسم الموعد (امتحان، مراجعة، محاضرة...):');
+  if (!title) return;
+  if (!events[key]) events[key] = [];
+  events[key].push(title);
+  saveEvents();
+  renderCalendar();
+}
+
+function renderEvents() {
+  const list = document.getElementById('eventList');
+  list.innerHTML = '';
+  const keys = Object.keys(events).sort((a,b) => {
+    const [y1,m1,d1] = a.split('-').map(Number);
+    const [y2,m2,d2] = b.split('-').map(Number);
+    return new Date(y1,m1-1,d1) - new Date(y2,m2-1,d2);
+  });
+  if (!keys.length) {
+    list.innerHTML = '<p style="color:#888">لا توجد مواعيد بعد. اضغط على يوم لإضافة موعد.</p>';
+    return;
+  }
+  keys.forEach(key => {
+    events[key].forEach((title, i) => {
+      const div = document.createElement('div');
+      div.className = 'event-item';
+      div.innerHTML = `<span>📅 ${key} — ${title}</span>
+                       <button onclick="deleteEvent('${key}', ${i})">حذف</button>`;
+      list.appendChild(div);
+    });
+  });
+}
+
+function deleteEvent(key, i) {
+  events[key].splice(i,1);
+  if (!events[key].length) delete events[key];
+  saveEvents();
+  renderCalendar();
+}
+
+function prevMonth() {
+  currentMonth--;
+  if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+  renderCalendar();
+}
+function nextMonth() {
+  currentMonth++;
+  if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+  renderCalendar();
+}
+
+renderCalendar();
+
+/* ===================== الإنجازات ===================== */
+let achievements = JSON.parse(localStorage.getItem('achievements') || 'null') || [
+  { name: 'السيميولوجيا', value: 70 },
+  { name: 'التشريح', value: 45 },
+  { name: 'الفيزيولوجيا', value: 90 },
+  { name: 'علم الأدوية', value: 30 }
+];
+function saveAchievements() { localStorage.setItem('achievements', JSON.stringify(achievements)); }
+
+function renderAchievements() {
+  const box = document.getElementById('achievements');
+  box.innerHTML = '';
+  achievements.forEach((a, i) => {
+    const div = document.createElement('div');
+    div.className = 'ach-item';
+    div.innerHTML = `
+      <div class="top">
+        <strong>${a.name}</strong>
+        <span>${a.value}%</span>
+      </div>
+      <div class="bar"><div class="bar-fill" style="width:${a.value}%"></div></div>
+      <input type="range" min="0" max="100" value="${a.value}"
+        onchange="updateAch(${i}, this.value)" style="width:100%;margin-top:8px">
+    `;
+    box.appendChild(div);
+  });
+}
+function updateAch(i, val) {
+  achievements[i].value = Number(val);
+  saveAchievements();
+  renderAchievements();
+}
+renderAchievements();
+
+/* ===================== نموذج التواصل ===================== */
+function sendMessage(e) {
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const msg = document.getElementById('msg').value;
+
+  // ✏️ غيّر بريدك هنا
+  const myEmail = 'you@example.com';
+  const subject = encodeURIComponent(`رسالة من ${name}`);
+  const body = encodeURIComponent(`الاسم: ${name}\nالبريد: ${email}\n\nالرسالة:\n${msg}`);
+
+  window.location.href = `mailto:${myEmail}?subject=${subject}&body=${body}`;
+}
+</script>
+
+</body>
+</html>
+```
+
+---
+
+✏️ أشياء يجب أن تغيّرها قبل النشر:
+
+ابحث في الكود عن هذه الأسطر وعدّلها:
+
+ما تبحث عنه ماذا تغيّر
+facebook.com/username رابط صفحتك على فيسبوك
+instagram.com/username حسابك على إنستغرام
+wa.me/213XXXXXXXXX رقم واتساب (مع رمز الدولة بدون +)
+t.me/username حسابك على تلغرام
+github.com/username حسابك على GitHub
+you@example.com (مرتان) بريدك الإلكتروني
+tel:+213XXXXXXXXX رقم هاتفك للاتصال المباشر
+
+---
+
+🆕 ما أضفناه الآن:
+
+القسم الوظيفة
+📅 تقويم تفاعلي تنقّل بين الشهور، اضغط على يوم لإضافة امتحان/موعد، تُحفظ تلقائياً
+🏆 شريط تقدم 4 مواد مع منزلق
