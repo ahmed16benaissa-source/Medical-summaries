@@ -32,14 +32,13 @@
 
   body {
     background-color: var(--primary-light);
-    /* خلفية طبية جراحية جذابة ونظيفة */
     background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2300b4d8' fill-opacity='0.06'%3E%3Cpath d='M50 30c-5-10-20-10-20 0 0 10 20 30 20 30s20-20 20-30c0-10-15-10-20 0z'/%3E%3Cpath d='M20 70a10 10 0 0 1 20 0v10H20z'/%3E%3Cpath d='M60 70a10 10 0 0 1 20 0v10H60z'/%3E%3Ccircle cx='50' cy='85' r='5'/%3E%3C/g%3E%3C/svg%3E");
     color: var(--text-main);
     line-height: 1.7;
     min-height: 100vh;
   }
 
-  /* ===== شاشة تسجيل الدخول بالاسم واللقب والإيميل ===== */
+  /* ===== شاشة تسجيل الدخول الشخصية ===== */
   #login-screen {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: linear-gradient(135deg, var(--primary-dark), var(--primary));
@@ -62,7 +61,7 @@
   }
   .login-btn:hover { background: var(--primary); }
 
-  /* ===== الشريط العلوي مع العلم الجزائري والأذكار والطقس ===== */
+  /* ===== الشريط العلوي مع العلم والأذكار ===== */
   header {
     background: linear-gradient(90deg, var(--primary-dark), var(--primary)); color: white;
     padding: 15px 25px; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100;
@@ -70,7 +69,6 @@
   }
   .header-brand { display: flex; align-items: center; gap: 12px; }
   
-  /* علم الجزائر يرفرف */
   .flag-container { width: 45px; height: 30px; overflow: hidden; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
   .algeria-flag { width: 100%; height: 100%; background: linear-gradient(to right, #006233 50%, #ffffff 50%); position: relative; animation: wave 3s infinite linear; }
   .algeria-flag::before { content: "☪"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #d21034; font-size: 16px; }
@@ -95,7 +93,7 @@
     display: flex; align-items: center; gap: 8px; border-bottom: 2px dashed rgba(0, 180, 216, 0.3); padding-bottom: 8px;
   }
 
-  /* ===== إدخال مفتاح Gemini API وتوليد الكويز الحقيقي ===== */
+  /* ===== الكويز الذكي بـ Gemini AI ===== */
   .api-box { background: #fff3cd; border: 2px solid var(--warning); padding: 15px; border-radius: 12px; margin-bottom: 15px; }
   .api-box input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 8px; font-family: monospace; }
   .api-box button { background: var(--warning); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
@@ -109,6 +107,11 @@
   .quiz-options button.correct { background: #d4edda; border-color: #c3e6cb; color: #155724; }
   .quiz-options button.wrong { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
 
+  /* ===== معرض الصور والرسومات الطبية ===== */
+  .image-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; margin-top: 12px; }
+  .gallery-thumb { width: 100%; height: 90px; object-fit: cover; border-radius: 8px; border: 2px solid var(--primary-light); cursor: pointer; transition: 0.2s; }
+  .gallery-thumb:hover { transform: scale(1.03); border-color: var(--primary); }
+
   /* ===== عداد التقدم ===== */
   .gauge-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 15px; }
   .gauge-wrapper { position: relative; width: 200px; height: 110px; }
@@ -117,23 +120,23 @@
   .subject-btn { background: var(--primary-light); border: 2px solid transparent; border-radius: 10px; padding: 8px 4px; text-align: center; cursor: pointer; }
   .subject-btn.active { border-color: var(--primary-dark); background: white; box-shadow: var(--shadow); }
 
-  /* ===== التقويم الشهري التفاعلي والمواعيد ===== */
+  /* ===== التقويم الشهري ===== */
   .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .cal-header button { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 5px 10px; cursor: pointer; font-weight: bold; }
   .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
   .cal-cell { background: var(--primary-light); border-radius: 6px; min-height: 40px; padding: 4px; font-size: 0.75rem; cursor: pointer; position: relative; }
   .cal-cell.today { background: var(--primary); color: white; font-weight: bold; }
   .event-dot { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; margin: 2px auto 0; display: block; }
-  .event-item { background: var(--primary-light); border-right: 4px solid var(--accent); padding: 6px; border-radius: 6px; margin-top: 5px; font-size: 0.8rem; display: flex; justify-content: space-between; }
+  .event-item { background: var(--primary-light); border-right: 4px solid var(--accent); padding: 6px; border-radius: 6px; margin-top: 5px; font-size: 0.8rem; }
 
-  /* ===== مساعد الذكاء الاصطناعي (Chat with Gemini) ===== */
+  /* ===== مساعد Gemini AI ===== */
   .ai-chat-box { background: white; border-radius: 12px; padding: 12px; border: 1px solid var(--primary-light); }
   .chat-messages { height: 180px; overflow-y: auto; border: 1px solid #eee; padding: 8px; border-radius: 8px; margin-bottom: 10px; font-size: 0.85rem; background: #fafafa; }
   .chat-input-area { display: flex; gap: 6px; }
   .chat-input-area input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 8px; outline: none; }
   .chat-input-area button { background: var(--primary-dark); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-  /* ===== الروابط والشبكات الاجتماعية وتواصل المالك ===== */
+  /* ===== الروابط والتواصل ===== */
   .social-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .social-card { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 10px; text-decoration: none; color: white; font-weight: bold; font-size: 0.9rem; }
   .s-telegram { background: #0088cc; }
@@ -151,7 +154,7 @@
 </head>
 <body>
 
-<!-- شاشة تسجيل الدخول الشخصية (الاسم واللقب + الإيميل) -->
+<!-- شاشة تسجيل الدخول -->
 <div id="login-screen">
   <div class="login-card">
     <h2>🩺 بوابة طلاب الطب</h2>
@@ -162,7 +165,7 @@
   </div>
 </div>
 
-<!-- الواجهة الرئيسية للموقع -->
+<!-- الواجهة الرئيسية -->
 <div id="main-site" style="display: none;">
   <header>
     <div class="header-brand">
@@ -179,7 +182,7 @@
 
   <div class="container">
 
-    <!-- لوحة تحكم المالك الخاصة بك (تظهر فقط للإيميل الخاص بك أو المالك) -->
+    <!-- لوحة تحكم المالك -->
     <section class="full-width admin-panel" id="adminControlPanel">
       <h2><i class="fa-solid fa-shield-halved"></i> لوحة تحكم المالك (إدارة نشاط الطلاب)</h2>
       <p style="font-size: 0.85rem; color:#856404;">تستطيع من هنا متابعة الطلاب الذين سجلوا دخولهم وكتبوا ملاحظات أو تفاعلوا بالموقع:</p>
@@ -187,23 +190,19 @@
         <thead>
           <tr><th>اسم الطالب واللقب</th><th>البريد الإلكتروني</th><th>وقت الدخول الأخير</th></tr>
         </thead>
-        <tbody id="adminUsersTableBody">
-          <!-- يتم تعبئتها برمجياً -->
-        </tbody>
+        <tbody id="adminUsersTableBody"></tbody>
       </table>
     </section>
 
-    <!-- 1. الكويز التفاعلي الذكي المتصل بـ Gemini AI -->
+    <!-- 1. الكويز التفاعلي الذكي بـ Gemini AI -->
     <section class="full-width">
       <h2><span class="ico">🧠</span> كويز طبي ذكي (مُتصل بـ Gemini AI)</h2>
-      <p style="margin-bottom: 12px; font-size: 0.9rem; color: #555;">ارفع ملف الـ PDF لمحاضرتك، وسيقوم الذكاء الاصطناعي بتوليد أسئلة دقيقة وتصحيحها فوراً.</p>
+      <p style="margin-bottom: 12px; font-size: 0.9rem; color: #555;">ارفع ملف الـ الـ PDF الخاص بمحاضرتك لتوليد أسئلة اختبارية.</p>
       
-      <!-- صندوق مفتاح Gemini API -->
       <div class="api-box" id="apiKeyBox">
-        <strong>🔑 أدخل مفتاح Gemini API الخاص بك (يُحفظ بأمان لديك):</strong>
+        <strong>🔑 أدخل مفتاح Gemini API الخاص بك:</strong>
         <input type="password" id="apiKeyInput" placeholder="AIzaSy...">
         <button onclick="saveApiKey()">حفظ المفتاح</button>
-        <span style="font-size:0.75rem; display:block; margin-top:4px;">احصل عليه مجاناً من Google AI Studio</span>
       </div>
 
       <div class="upload-zone" onclick="checkApiBeforeUpload()">
@@ -222,7 +221,16 @@
       </div>
     </section>
 
-    <!-- 2. عداد التقدم لمواد السنة الثالثة طب -->
+    <!-- 2. خاصية إدراج وإدارة الصور والرسومات الطبية -->
+    <section>
+      <h2><span class="ico">🖼️</span> إدراج الصور والرسومات الطبية</h2>
+      <p style="font-size:0.85rem; color:#555; margin-bottom:10px;">أضف صور المخططات التوضيحية، الأشعة، أو الرسوم لمرجعك الخاص:</p>
+      <input type="file" id="imageUploaderInput" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
+      <button onclick="document.getElementById('imageUploaderInput').click()" style="width:100%; background:var(--primary); color:white; border:none; padding:10px; border-radius:10px; font-weight:bold; cursor:pointer;"><i class="fa-solid fa-cloud-arrow-up"></i> رفع صورة جديدة</button>
+      <div class="image-gallery-grid" id="imageGalleryGrid"></div>
+    </section>
+
+    <!-- 3. عداد التقدم الدراسي -->
     <section>
       <h2><span class="ico">🏆</span> عداد التقدم الدراسي</h2>
       <div class="gauge-container">
@@ -239,7 +247,7 @@
       <div class="subject-grid" id="subjectsGridContainer"></div>
     </section>
 
-    <!-- 3. التقويم الشهري وإضافة المناسبات والحفلات -->
+    <!-- 4. التقويم الشهري -->
     <section>
       <h2><span class="ico">📅</span> التقويم الشهري والمواعيد</h2>
       <div class="cal-header">
@@ -254,12 +262,12 @@
       <div id="eventsListContainer" style="margin-top:10px; max-height:110px; overflow-y:auto;"></div>
     </section>
 
-    <!-- 4. محادثة ذكية مع Gemini AI -->
+    <!-- 5. محادثة ذكية مع Gemini AI -->
     <section>
       <h2><span class="ico">💬</span> اسأل مساعد Gemini الطبي</h2>
       <div class="ai-chat-box">
         <div class="chat-messages" id="aiChatHistory">
-          <div style="color:var(--primary-dark); margin-bottom:5px;"><b>مساعد Gemini:</b> أهلاً بك زميلي الطبيب، كيف يمكنني مساعدتك في مراجعة دروسك اليوم؟</div>
+          <div style="color:var(--primary-dark); margin-bottom:5px;"><b>مساعد Gemini:</b> أهلاً بك زميلي الطبيب، كيف يمكنني مساعدتك اليوم؟</div>
         </div>
         <div class="chat-input-area">
           <input type="text" id="aiUserMsg" placeholder="اكتب سؤالك الطبي هنا..." onkeypress="if(event.key==='Enter') sendMsgToGemini()">
@@ -268,7 +276,7 @@
       </div>
     </section>
 
-    <!-- 5. روابط الدرايف والتواصل (Telegram & WhatsApp) -->
+    <!-- 6. الروابط والتواصل والدرايف -->
     <section>
       <h2><span class="ico">🔗</span> مكتبة الدرايف والتواصل</h2>
       <div class="social-grid">
@@ -276,7 +284,7 @@
           <i class="fa-solid fa-folder-open"></i> تصفح ملفات Google Drive
         </a>
         <a class="social-card s-telegram" href="https://t.me/Hmideu" target="_blank">
-          <i class="fa-brands fa-telegram"></i> قناة تلغرام
+          <i class="fa-brands fa-telegram"></i> قناة تلغرام (@Hmideu)
         </a>
         <a class="social-card s-whatsapp" href="https://wa.me/213666331123" target="_blank">
           <i class="fa-brands fa-whatsapp"></i> واتساب المالك
@@ -284,7 +292,7 @@
       </div>
     </section>
 
-    <!-- 6. اقتراحات وتواصل مع المالك -->
+    <!-- 7. ملاحظات واقتراحات للمالك -->
     <section>
       <h2><span class="ico">✉️</span> تواصل واقترح لصاحب الموقع</h2>
       <form onsubmit="sendFeedbackToOwner(event)">
@@ -298,8 +306,7 @@
 </div>
 
 <script>
-  /* ================= نظام تسجيل الدخول والمالك ================= */
-  const ADMIN_EMAIL_TARGET = "ahmed16benaissa@gmail.com"; // البريد الخاص بك لفتح لوحة التحكم
+  const ADMIN_EMAIL_TARGET = "ahmed16benaissa@gmail.com";
 
   function loginUser() {
     const fullName = document.getElementById('inputFullName').value.trim();
@@ -311,7 +318,6 @@
     localStorage.setItem('currentUserFullName', fullName);
     localStorage.setItem('currentUserEmail', email);
 
-    // تسجيل الدخول في قائمة المستخدمين للمالك
     let usersList = JSON.parse(localStorage.getItem('registeredUsersList') || '[]');
     if(!usersList.some(u => u.email === email)) {
       usersList.push({ name: fullName, email: email, time: new Date().toLocaleString() });
@@ -334,13 +340,13 @@
     document.getElementById('main-site').style.display = 'block';
     document.getElementById('userDisplayName').textContent = name;
 
-    // فحص صلاحية المالك
     if (email.toLowerCase() === ADMIN_EMAIL_TARGET.toLowerCase()) {
       document.getElementById('adminControlPanel').style.display = 'block';
       renderAdminUsersTable();
     }
 
     initWidgets();
+    renderSavedImages();
   }
 
   function renderAdminUsersTable() {
@@ -352,7 +358,7 @@
     });
   }
 
-  /* ================= الويدجتس والأذكار المتنوعة (100 ذكر تتغير كل 5 ثواني) ================= */
+  /* ================= الأذكار والساعة ================= */
   const diverseAthkar = [
     "سبحان الله وبحمده، سبحان الله العظيم",
     "لا إله إلا أنت سبحانك إني كنت من الظالمين",
@@ -360,21 +366,16 @@
     "لا حول ولا قوة إلا بالله العلي العظيم",
     "اللهم صل وسلم على نبينا محمد",
     "سبحان الله والحمد لله ولا إله إلا الله والله أكبر",
-    "حسبنا الله ونعم الوكيل",
-    "اللهم إني أسألك علماً نافعاً ورزقاً طيباً وعملاً متقبلاً",
-    "يا حي يا قيوم برحمتك أستغيث",
-    "رضيت بالله رباً وبالإسلام ديناً وبمحمد صلى الله عليه وسلم نبياً"
+    "حسبنا الله ونعم الوكيل"
   ];
   let athkarIdx = 0;
 
   function initWidgets() {
-    // الساعة
     setInterval(() => {
       const now = new Date();
       document.getElementById('clockTime').textContent = now.toLocaleTimeString('en-GB');
     }, 1000);
 
-    // الأذكار المتنوعة تتغير كل 5 ثواني
     setInterval(() => {
       athkarIdx = (athkarIdx + 1) % diverseAthkar.length;
       document.getElementById('athkarBox').textContent = "📿 " + diverseAthkar[athkarIdx];
@@ -386,7 +387,37 @@
     checkApiKeySetup();
   }
 
-  /* ================= عداد التقدم الدراسي ================= */
+  /* ================= خاصية إدراج الصور والرسومات الطبية ================= */
+  function handleImageUpload(event) {
+    const file = event.target.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const base64Img = e.target.result;
+      let storedImages = JSON.parse(localStorage.getItem('medicalGalleryImages') || '[]');
+      storedImages.push(base64Img);
+      localStorage.setItem('medicalGalleryImages', JSON.stringify(storedImages));
+      renderSavedImages();
+      alert('تم رفع وإدراج الصورة بنجاح!');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function renderSavedImages() {
+    const grid = document.getElementById('imageGalleryGrid');
+    let storedImages = JSON.parse(localStorage.getItem('medicalGalleryImages') || '[]');
+    grid.innerHTML = '';
+    if(storedImages.length === 0) {
+      grid.innerHTML = '<span style="font-size:0.75rem; color:#888; grid-column:span 2;">لا توجد صور مضافة بعد.</span>';
+      return;
+    }
+    storedImages.forEach((imgSrc) => {
+      grid.innerHTML += `<img src="${imgSrc}" class="gallery-thumb" onclick="window.open('${imgSrc}')" title="اضغط لعرض الصورة بحجمها الكامل">`;
+    });
+  }
+
+  /* ================= عداد التقدم ================= */
   const medicalSubjects = [
     { id: 'semiologie', name: 'Sémiologie', emoji: '🩺' },
     { id: 'physio', name: 'Physio', emoji: '🫀' },
@@ -436,7 +467,7 @@
   }
   setTimeout(() => selectSub('semiologie', 'Sémiologie', '🩺'), 100);
 
-  /* ================= التقويم الشهري وإضافة المواعيد ================= */
+  /* ================= التقويم الشهري ================= */
   let currMonth = new Date().getMonth();
   let currYear = new Date().getFullYear();
   let calendarEvents = JSON.parse(localStorage.getItem('calendarEventsMap') || '{}');
@@ -502,7 +533,7 @@
     renderCalendarMonth();
   }
 
-  /* ================= الربط الحقيقي بـ Gemini AI للكويزات والدردشة ================= */
+  /* ================= كويز Gemini AI ================= */
   function checkApiKeySetup() {
     if(localStorage.getItem('geminiApiKeyStored')) {
       document.getElementById('apiKeyBox').style.display = 'none';
@@ -536,7 +567,7 @@
     const section = document.getElementById('quizSection');
     const content = document.getElementById('quizContentArea');
     section.style.display = 'block';
-    content.innerHTML = '<p style="text-align:center; color:var(--primary-dark); font-weight:bold;"><i class="fa-solid fa-spinner fa-spin"></i> جاري قراءة الملف وإرساله إلى Gemini AI لتوليد الأسئلة...</p>';
+    content.innerHTML = '<p style="text-align:center; color:var(--primary-dark); font-weight:bold;"><i class="fa-solid fa-spinner fa-spin"></i> جاري قراءة الملف وإرساله إلى Gemini AI...</p>';
     document.getElementById('quizFileName').textContent = file.name;
 
     try {
@@ -550,7 +581,7 @@
       }
 
       const apiKey = localStorage.getItem('geminiApiKeyStored');
-      const prompt = `أنت أستاذ طب بارع. اقرأ هذا النص الطبي واستخرج منه 5 أسئلة متعددة الخيارات (MCQ). أرجع النتيجة حصراً بصيغة JSON طبقاً لهذا الهيكل بدون أي نص إضافي:
+      const prompt = `أنت أستاذ طب. اقرأ هذا النص الطبي واستخرج منه 5 أسئلة متعددة الخيارات (MCQ). أرجع النتيجة بصيغة JSON حصراً بهذا الهيكل:
       [
         {
           "question": "نص السؤال",
@@ -627,7 +658,7 @@
     renderGeminiQuestion();
   }
 
-  /* ================= دردشة الذكاء الاصطناعي Gemini AI ================= */
+  /* ================= دردشة الذكاء الاصطناعي ================= */
   async function sendMsgToGemini() {
     const input = document.getElementById('aiUserMsg');
     const msg = input.value.trim();
@@ -639,7 +670,7 @@
 
     const apiKey = localStorage.getItem('geminiApiKeyStored');
     if(!apiKey) {
-      alert('يرجى إدخال مفتاح Gemini API في قسم الكويز أولاً لتفعيل الدردشة الذكية.');
+      alert('يرجى إدخال مفتاح Gemini API أولاً.');
       return;
     }
 
@@ -654,14 +685,13 @@
       history.innerHTML += `<div style="color:var(--primary-dark); margin-bottom:5px;"><b>Gemini:</b> ${reply}</div>`;
       history.scrollTop = history.scrollHeight;
     } catch(e) {
-      history.innerHTML += `<div style="color:var(--accent);">عذراً، حدث خطأ في الاتصال بالذكاء الاصطناعي.</div>`;
+      history.innerHTML += `<div style="color:var(--accent);">عذراً، حدث خطأ في الاتصال.</div>`;
     }
   }
 
   function sendFeedbackToOwner(e) {
     e.preventDefault();
-    const txt = document.getElementById('feedbackText').value;
-    alert('شكراً لك! تم إرسال اقتراحك وملاحظتك إلى صاحب الموقع بنجاح.');
+    alert('شكراً لك! تم إرسال ملاحظتك لصاحب الموقع.');
     document.getElementById('feedbackText').value = '';
   }
 </script>
