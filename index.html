@@ -1,12 +1,3 @@
-فهمت قصدك تماماً! لقد قمت بتصميم عداد دائري تفاعلي (Gauge Dial) يشبه عداد سرعة السيارة.
-
-· بمجرد أن يلمس الطالب الدائرة ويسحبها بإصبعه (أو يحرك المؤشر)، يتغير الرقم من 1 إلى 10.
-· يتغير لون القوس المضيء تلقائياً: أحمر (1-3) ← برتقالي (4-6) ← أصفر (7-8) ← أخضر (9-10).
-· تم وضع المواد (Sémiologie, Physio, إلخ) كأزرار تحتها، عند الضغط على أي مادة، يتذكر العداد تقييمها.
-
-إليك الكود الكامل والنهائي (تم إصلاح كل الأخطاء السابقة وتنسيقه ليعمل بسلاسة). انسخه واستبدله في ملف index.html:
-
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -53,6 +44,7 @@ function googleTranslateElementInit() {
   .login-box { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 90%; max-width: 400px; text-align: center; }
   .login-box h2 { color: var(--sky-blue-dark); margin-bottom: 20px; }
   .login-box input { width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid var(--sky-blue-light); border-radius: 10px; font-size: 1rem; outline: none; }
+  .login-box input:focus { border-color: var(--sky-blue); }
   .login-box button { width: 100%; padding: 12px; background: var(--sky-blue); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
 
   /* ===== شريط علوي ===== */
@@ -64,7 +56,7 @@ function googleTranslateElementInit() {
   .athkar-box { background: #ffeaa7; color: #d35400; font-weight: bold; border-color: #fdcb6e; max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   #google_translate_element { background: white; border-radius: 6px; padding: 2px 6px; }
 
-  /* ===== المحتوى (شبكة متجاوبة) ===== */
+  /* ===== المحتوى ===== */
   .search-wrap { padding: 20px 22px 0; max-width: 1100px; margin: auto; }
   .search-box { display: flex; gap: 8px; background: var(--white); border-radius: 40px; padding: 6px 6px 6px 18px; box-shadow: var(--shadow); align-items: center; }
   .search-box input { flex: 1; border: none; outline: none; font-size: 1rem; padding: 10px; background: transparent; }
@@ -82,16 +74,10 @@ function googleTranslateElementInit() {
   /* ===== عداد الإنجازات (Gauge) ===== */
   .gauge-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
   .gauge-title { font-weight: bold; color: var(--sky-blue-dark); margin-bottom: 10px; font-size: 1.1rem; }
-  
-  /* تصميم العداد الدائري */
   .gauge-wrapper { position: relative; width: 220px; height: 130px; }
   .gauge-svg { width: 100%; height: 100%; }
   .gauge-text { position: absolute; bottom: 15px; left: 0; width: 100%; text-align: center; font-size: 2rem; font-weight: bold; color: var(--red); transition: color 0.2s; }
-  
-  /* شريط السحب */
   .gauge-slider { width: 80%; margin-top: 10px; accent-color: var(--sky-blue); }
-  
-  /* شبكة المواد */
   .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 10px; margin-top: 15px; }
   .subject-btn { background: var(--sky-blue-light); border: 2px solid transparent; border-radius: 10px; padding: 10px 5px; text-align: center; cursor: pointer; transition: 0.3s; }
   .subject-btn.active { border-color: var(--sky-blue-dark); background: white; box-shadow: var(--shadow); }
@@ -144,6 +130,7 @@ function googleTranslateElementInit() {
   .add-tip-box input { flex: 1; padding: 10px; border: 2px solid var(--sky-blue-light); border-radius: 10px; outline: none; }
   .add-tip-box button { background: var(--sky-blue); color: white; border: none; border-radius: 10px; padding: 10px 15px; font-weight: bold; cursor: pointer; }
   .tip-card { background: var(--sky-blue-light); border-radius: 12px; padding: 12px; border-left: 4px solid var(--sky-blue-dark); margin-bottom: 10px; position: relative; font-size: 0.9rem; }
+  .tip-card .tip-author { font-size: 0.75rem; color: var(--sky-blue-dark); font-weight: bold; margin-bottom: 5px; display: block; }
   .tip-card button { position: absolute; top: 10px; left: 10px; background: var(--red); color: white; border: none; border-radius: 6px; padding: 2px 6px; cursor: pointer; font-size: 0.7rem; }
   .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
   .social-card { display: flex; flex-direction: column; align-items: center; padding: 10px; border-radius: 10px; text-decoration: none; color: white; font-weight: bold; font-size: 0.8rem; }
@@ -159,15 +146,18 @@ function googleTranslateElementInit() {
 </head>
 <body>
 
+<!-- ======== شاشة تسجيل الدخول ======== -->
 <div id="login-screen">
   <div class="login-box">
     <h2>🩺 مرحباً بك</h2>
-    <p style="margin-bottom: 20px; color: #555;">أدخل بريدك الإلكتروني للدخول.</p>
-    <input type="email" id="emailInput" placeholder="example@email.com">
+    <p style="margin-bottom: 20px; color: #555; font-size: 0.9rem;">أدخل معلوماتك للدخول إلى المنصة.</p>
+    <input type="text" id="nameInput" placeholder="الاسم واللقب (مثال: أحمد بن علي)">
+    <input type="email" id="emailInput" placeholder="البريد الإلكتروني (example@email.com)">
     <button onclick="loginUser()">دخول</button>
   </div>
 </div>
 
+<!-- ======== الموقع ======== -->
 <div id="main-site" style="display: none;">
   <header>
     <h1>ملخصاتي الطبية</h1>
@@ -186,11 +176,12 @@ function googleTranslateElementInit() {
   </div>
 
   <main>
-    <!-- 1. إضافة الملخصات + الكويز (عرض كامل) -->
+    <!-- 1. إضافة الملخصات + الكويز -->
     <section class="full-width">
       <h2><span class="ico">📁</span> إضافة ملخصات (توليد كويز تلقائي)</h2>
       <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
         <span style="font-size: 2rem;">📤</span><br><strong>اضغط لاختيار ملف PDF</strong>
+        <p style="font-size:0.8rem; color:#555; margin-top:5px;">سيتم توليد كويز بناءً على اسم الملف</p>
       </div>
       <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="addFiles(event)">
       <div class="file-list" id="fileList"></div>
@@ -201,34 +192,24 @@ function googleTranslateElementInit() {
       </div>
     </section>
 
-    <!-- 2. عداد الإنجازات (Gauge) -->
+    <!-- 2. عداد الإنجازات -->
     <section>
       <h2><span class="ico">🏆</span> عداد التقدم</h2>
       <div class="gauge-container">
         <div class="gauge-title" id="gaugeSubjectName">Sémiologie 🩺</div>
-        
         <div class="gauge-wrapper">
-          <!-- رسم العداد -->
           <svg class="gauge-svg" viewBox="0 0 200 120">
-            <!-- المسار الرمادي الخلفي (القوس) -->
             <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#e0e0e0" stroke-width="18" stroke-linecap="round"/>
-            <!-- المسار الملون (يتم التحكم به عبر الجافاسكريبت) -->
             <path id="gaugePath" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#e74c3c" stroke-width="18" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251"/>
           </svg>
           <div class="gauge-text" id="gaugeScore">1/10</div>
         </div>
-        
-        <!-- شريط السحب اليدوي -->
         <input type="range" class="gauge-slider" id="gaugeSlider" min="1" max="10" value="1" step="1" oninput="updateGauge(this.value)">
       </div>
-
-      <!-- شبكة المواد -->
-      <div class="subject-grid" id="subjectGrid">
-        <!-- سيتم توليدها بالجافاسكريبت -->
-      </div>
+      <div class="subject-grid" id="subjectGrid"></div>
     </section>
 
-    <!-- 3. التقويم الشهري -->
+    <!-- 3. التقويم -->
     <section>
       <h2><span class="ico">📅</span> التقويم الشهري</h2>
       <div class="cal-header">
@@ -258,7 +239,7 @@ function googleTranslateElementInit() {
       <div class="translation-result" id="translationResult"></div>
     </section>
 
-    <!-- 5. مستجدات الدرايف -->
+    <!-- 5. الدرايف -->
     <section>
       <h2><span class="ico">☁️</span> ملفات الدرايف</h2>
       <div class="highlight-blue" style="text-align: center;">
@@ -277,7 +258,7 @@ function googleTranslateElementInit() {
       <div id="tipsGrid"></div>
     </section>
 
-    <!-- 7. جدول العلامات الحيوية -->
+    <!-- 7. علامات حيوية -->
     <section>
       <h2><span class="ico">📊</span> علامات حيوية</h2>
       <table>
@@ -289,18 +270,18 @@ function googleTranslateElementInit() {
       </table>
     </section>
 
-    <!-- 8. تواصل معي -->
+    <!-- 8. تواصل -->
     <section>
       <h2><span class="ico">📝</span> تواصل</h2>
       <form class="contact-form" onsubmit="sendMessage(event)">
-        <label>الاسم</label><input type="text" id="name" required>
-        <label>البريد</label><input type="email" id="email" required>
-        <label>الرسالة</label><textarea id="msg" required rows="3"></textarea>
+        <label>الاسم</label><input type="text" id="cName" required>
+        <label>البريد</label><input type="email" id="cEmail" required>
+        <label>الرسالة</label><textarea id="cMsg" required rows="3"></textarea>
         <button type="submit" style="background:var(--sky-blue-dark); color:white; border:none; padding:10px; border-radius:8px; cursor:pointer;">إرسال</button>
       </form>
     </section>
 
-    <!-- 9. روابط التواصل -->
+    <!-- 9. روابط -->
     <section>
       <h2><span class="ico">🔗</span> روابط</h2>
       <div class="social-grid">
@@ -313,7 +294,7 @@ function googleTranslateElementInit() {
       </div>
     </section>
 
-    <!-- 10. الآلة الحاسبة (في الأسفل) -->
+    <!-- 10. الآلة الحاسبة -->
     <section class="full-width">
       <h2><span class="ico">🧮</span> آلة حاسبة</h2>
       <div class="calc-container">
@@ -340,22 +321,28 @@ function googleTranslateElementInit() {
 <script>
 /* ===================== تسجيل الدخول ===================== */
 function loginUser() {
+  const name = document.getElementById('nameInput').value.trim();
   const email = document.getElementById('emailInput').value.trim();
-  if (!email || !email.includes('@')) { alert('أدخل بريداً صالحاً'); return; }
+  
+  if (!name || name.length < 3) { alert('يرجى إدخال الاسم واللقب.'); return; }
+  if (!email || !email.includes('@')) { alert('يرجى إدخال بريد إلكتروني صالح.'); return; }
+  
+  localStorage.setItem('userName', name);
   localStorage.setItem('userEmail', email);
+  
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('main-site').style.display = 'block';
   initApp();
 }
+
 window.onload = function() {
-  if (localStorage.getItem('userEmail')) {
+  if (localStorage.getItem('userName')) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('main-site').style.display = 'block';
     initApp();
   }
 };
 
-/* ===================== الإعدادات الأولية ===================== */
 function initApp() {
   updateClock(); setInterval(updateClock, 1000);
   changeAthkar(); setInterval(changeAthkar, 5000);
@@ -380,7 +367,7 @@ function updateClock() {
   document.getElementById('clock-city').textContent = '📍 ' + (Intl.DateTimeFormat().resolvedOptions().timeZone || 'الجزائر');
 }
 
-/* ===================== عداد الإنجازات (Gauge) ===================== */
+/* ===================== العداد (Gauge) ===================== */
 const subjects = [
   { id: 'semiologie', name: 'Sémiologie', emoji: '🩺' }, { id: 'physio', name: 'Physio', emoji: '🫀' },
   { id: 'pathologie', name: 'Pathologie', emoji: '🦠' }, { id: 'biochimie', name: 'Biochimie', emoji: '🧪' },
@@ -396,18 +383,14 @@ function renderSubjects() {
   const grid = document.getElementById('subjectGrid');
   grid.innerHTML = '';
   subjects.forEach(sub => {
-    let score = subjectScores[sub.id] || 1; // القيمة الافتراضية 1
+    let score = subjectScores[sub.id] || 1;
     const div = document.createElement('div');
     div.className = `subject-btn ${sub.id === currentSubjectId ? 'active' : ''}`;
     div.onclick = () => selectSubject(sub.id, sub.name, sub.emoji);
-    
-    // تحديد لون الرقم داخل الزر
-    let color = getColor(score);
-
     div.innerHTML = `
       <span class="emoji">${sub.emoji}</span>
       <span class="name">${sub.name}</span>
-      <div style="font-size:0.8rem; font-weight:bold; color:${color}; margin-top:5px;">${score}/10</div>
+      <div style="font-size:0.8rem; font-weight:bold; color:${getColor(score)}; margin-top:5px;">${score}/10</div>
     `;
     grid.appendChild(div);
   });
@@ -419,7 +402,7 @@ function selectSubject(id, name, emoji) {
   let score = subjectScores[id] || 1;
   document.getElementById('gaugeSlider').value = score;
   updateGauge(score, false);
-  renderSubjects(); // لتحديث الإطار النشط
+  renderSubjects();
 }
 
 function updateGauge(value, save = true) {
@@ -427,20 +410,13 @@ function updateGauge(value, save = true) {
   if (save) {
     subjectScores[currentSubjectId] = value;
     localStorage.setItem('subjectScores', JSON.stringify(subjectScores));
-    renderSubjects(); // تحديث الرقم تحت المادة
+    renderSubjects();
   }
-
   let color = getColor(value);
-  
-  // تحديث النص واللون
   document.getElementById('gaugeScore').textContent = value + '/10';
   document.getElementById('gaugeScore').style.color = color;
-
-  // حساب طول القوس (طول القوس الكلي هو 251)
-  // القيمة القصوى 10، لذلك كل نقطة تمثل 25.1 من القوس
+  
   const maxOffset = 251;
-  // إذا كانت القيمة 10، الـ offset يكون 0 (قوس ممتلئ)
-  // إذا كانت القيمة 1، الـ offset يكون 251 - 25.1 = 225.9
   const offset = maxOffset - (value / 10) * maxOffset;
   
   const path = document.getElementById('gaugePath');
@@ -449,18 +425,13 @@ function updateGauge(value, save = true) {
   path.style.transition = 'stroke-dashoffset 0.3s ease, stroke 0.3s ease';
 }
 
-// دالة تحديد اللون
 function getColor(value) {
-  if (value <= 3) return '#e74c3c';      // أحمر (1-3)
-  if (value <= 6) return '#f39c12';      // برتقالي (4-6)
-  if (value <= 8) return '#f1c40f';      // أصفر (7-8)
-  return '#2ecc71';                      // أخضر (9-10)
+  if (value <= 3) return '#e74c3c';
+  if (value <= 6) return '#f39c12';
+  if (value <= 8) return '#f1c40f';
+  return '#2ecc71';
 }
-
-// تشغيل العداد لأول مرة
-setTimeout(() => {
-  selectSubject('semiologie', 'Sémiologie', '🩺');
-}, 100);
+setTimeout(() => { selectSubject('semiologie', 'Sémiologie', '🩺'); }, 100);
 
 /* ===================== التقويم ===================== */
 let currentMonth = new Date().getMonth();
@@ -472,8 +443,6 @@ function renderCalendar() {
   const grid = document.getElementById('calendarGrid');
   const monthNames = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
   document.getElementById('monthYear').textContent = `${monthNames[currentMonth]} ${currentYear}`;
-  
-  // إزالة الأيام القديمة (مع الحفاظ على أسماء الأيام)
   while (grid.children.length > 7) grid.removeChild(grid.lastChild);
 
   const firstDay = new Date(currentYear, currentMonth, 1).getDay();
@@ -481,22 +450,15 @@ function renderCalendar() {
   const today = new Date();
 
   for (let i = 0; i < firstDay; i++) {
-    const empty = document.createElement('div');
-    empty.className = 'cal-cell empty';
-    grid.appendChild(empty);
+    const empty = document.createElement('div'); empty.className = 'cal-cell empty'; grid.appendChild(empty);
   }
-
   for (let d = 1; d <= daysInMonth; d++) {
     const cell = document.createElement('div');
     cell.className = 'cal-cell';
     const key = `${currentYear}-${currentMonth+1}-${d}`;
     cell.innerHTML = `<span class="num">${d}</span>`;
-    if (events[key] && events[key].length) {
-      cell.innerHTML += `<span class="event-dot"></span>`;
-    }
-    if (d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
-      cell.classList.add('today');
-    }
+    if (events[key] && events[key].length) cell.innerHTML += `<span class="event-dot"></span>`;
+    if (d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) cell.classList.add('today');
     cell.onclick = () => addEvent(key);
     grid.appendChild(cell);
   }
@@ -516,7 +478,6 @@ function renderEvents() {
   list.innerHTML = '';
   const keys = Object.keys(events).sort();
   if (!keys.length) { list.innerHTML = '<p style="color:#888; font-size:0.8rem;">لا توجد مواعيد مضافة.</p>'; return; }
-  
   keys.forEach(key => {
     events[key].forEach((title, i) => {
       const div = document.createElement('div');
@@ -552,10 +513,10 @@ async function translateText() {
   } catch (error) { resultBox.textContent = '❌ خطأ في الاتصال.'; }
 }
 
-/* ===================== النصائح ===================== */
+/* ===================== النصائح (مع اسم الطالب) ===================== */
 let tips = JSON.parse(localStorage.getItem('userTips') || 'null') || [
-  { text: 'اقرأ بانتظام: خصص 30 دقيقة يومياً للمراجعة.' },
-  { text: 'استخدم الخرائط الذهنية لربط المعلومات.' }
+  { text: 'اقرأ بانتظام: خصص 30 دقيقة يومياً للمراجعة.', author: 'النظام' },
+  { text: 'استخدم الخرائط الذهنية لربط المعلومات.', author: 'النظام' }
 ];
 function renderTips() {
   const grid = document.getElementById('tipsGrid');
@@ -563,7 +524,11 @@ function renderTips() {
   tips.forEach((t, i) => {
     const div = document.createElement('div');
     div.className = 'tip-card';
-    div.innerHTML = `<p>${t.text}</p><button onclick="deleteTip(${i})">حذف</button>`;
+    div.innerHTML = `
+      <span class="tip-author">👤 ${t.author}</span>
+      <p>${t.text}</p>
+      <button onclick="deleteTip(${i})">حذف</button>
+    `;
     grid.appendChild(div);
   });
 }
@@ -571,7 +536,9 @@ function addNewTip() {
   const input = document.getElementById('newTipInput');
   const text = input.value.trim();
   if (!text) return;
-  tips.push({ text: text });
+  
+  const author = localStorage.getItem('userName') || 'طالب مجهول';
+  tips.push({ text: text, author: author });
   localStorage.setItem('userTips', JSON.stringify(tips));
   renderTips(); input.value = '';
 }
@@ -580,42 +547,71 @@ function deleteTip(i) { tips.splice(i, 1); localStorage.setItem('userTips', JSON
 /* ===================== الآلة الحاسبة ===================== */
 let calcCurrent = '0';
 function updateCalcScreen() { document.getElementById('calcScreen').textContent = calcCurrent; }
-function calcInput(val) {
-  if (calcCurrent === '0' && val !== '.' && val !== '%') calcCurrent = '';
-  calcCurrent += val;
-  updateCalcScreen();
-}
+function calcInput(val) { if (calcCurrent === '0' && val !== '.' && val !== '%') calcCurrent = ''; calcCurrent += val; updateCalcScreen(); }
 function calcClear() { calcCurrent = '0'; updateCalcScreen(); }
 function calcDelete() { calcCurrent = calcCurrent.slice(0, -1); if (calcCurrent === '') calcCurrent = '0'; updateCalcScreen(); }
 function calcEqual() {
   try {
     let expression = calcCurrent.replace(/%/g, '/100');
     let result = eval(expression);
-    calcCurrent = String(result);
-    updateCalcScreen();
+    calcCurrent = String(result); updateCalcScreen();
   } catch (e) { calcCurrent = 'خطأ'; updateCalcScreen(); setTimeout(calcClear, 1500); }
 }
 
-/* ===================== الكويزات والملفات ===================== */
+/* ===================== الكويزات التفاعلية (قراءة اسم الملف) ===================== */
 function addFiles(event) {
   const file = event.target.files[0];
   if (!file) return;
   
-  // عرض اسم الملف
   const list = document.getElementById('fileList');
   list.innerHTML = `<div class="file-item"><span>📄 ${file.name}</span></div>`;
 
-  // توليد كويز وهمي بناءً على اسم الملف
   document.getElementById('quizSection').style.display = 'block';
-  document.getElementById('quizFileName').textContent = file.name;
+  const fileName = file.name.replace('.pdf', '').replace('.PDF', '');
+  document.getElementById('quizFileName').textContent = fileName;
   
   const quizContent = document.getElementById('quizContent');
+  const lowerName = fileName.toLowerCase();
+  
+  let qText = "";
+  let correct = "";
+  let wrong1 = "";
+  let wrong2 = "";
+
+  // توليد الأسئلة بناءً على اسم الملف
+  if (lowerName.includes('anapath') || lowerName.includes('anatomo')) {
+    qText = "ما هو العلم الذي يدرس التغيرات المرضية في الأنسجة؟";
+    correct = "علم التشريح المرضي (Anapath)";
+    wrong1 = "علم وظائف الأعضاء (Physio)";
+    wrong2 = "علم الأدوية (Pharmaco)";
+  } else if (lowerName.includes('physio')) {
+    qText = "ما هو العلم الذي يدرس وظائف أعضاء الجسم؟";
+    correct = "علم وظائف الأعضاء (Physiologie)";
+    wrong1 = "علم التشريح (Anatomie)";
+    wrong2 = "علم الأحياء الدقيقة (Microbiologie)";
+  } else if (lowerName.includes('semiologie') || lowerName.includes('semi')) {
+    qText = "ما هو العلم الذي يدرس علامات وأعراض الأمراض؟";
+    correct = "علم السيميولوجيا (Sémiologie)";
+    wrong1 = "علم الطفيليات (Parasitologie)";
+    wrong2 = "علم المناعة (Immunologie)";
+  } else if (lowerName.includes('micro') || lowerName.includes('bacteri')) {
+    qText = "ما هو العلم الذي يدرس البكتيريا والفيروسات؟";
+    correct = "علم الأحياء الدقيقة (Microbiologie)";
+    wrong1 = "علم الأنسجة (Histologie)";
+    wrong2 = "علم الصيدلة (Pharmacologie)";
+  } else {
+    qText = `ما هو الموضوع الأساسي لملف "${fileName}"؟`;
+    correct = "موضوع طبي متخصص (إجابة صحيحة)";
+    wrong1 = "موضوع تاريخي (إجابة خاطئة)";
+    wrong2 = "موضوع رياضي (إجابة خاطئة)";
+  }
+
   quizContent.innerHTML = `
-    <div class="quiz-question">سؤال تجريبي حول: ${file.name.split('.')[0]}؟</div>
+    <div class="quiz-question">${qText}</div>
     <div class="quiz-options">
-      <button onclick="checkAnswer(this, true)">الإجابة الصحيحة (خيار أ)</button>
-      <button onclick="checkAnswer(this, false)">إجابة خاطئة (خيار ب)</button>
-      <button onclick="checkAnswer(this, false)">إجابة خاطئة (خيار ج)</button>
+      <button onclick="checkAnswer(this, false)">${wrong1}</button>
+      <button onclick="checkAnswer(this, true)">${correct}</button>
+      <button onclick="checkAnswer(this, false)">${wrong2}</button>
     </div>
   `;
 }
@@ -625,19 +621,22 @@ function checkAnswer(btn, isCorrect) {
   options.forEach(b => b.disabled = true);
   if (isCorrect) {
     btn.classList.add('correct');
+    alert('✅ إجابة صحيحة! أحسنت.');
   } else {
     btn.classList.add('wrong');
-    // إظهار الإجابة الصحيحة
-    options[0].classList.add('correct');
+    options.forEach(b => {
+      if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+    });
+    alert('❌ إجابة خاطئة. الإجابة الصحيحة مظللة بالأخضر.');
   }
 }
 
 /* ===================== نموذج التواصل ===================== */
 function sendMessage(e) {
   e.preventDefault();
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const msg = document.getElementById('msg').value;
+  const name = document.getElementById('cName').value;
+  const email = document.getElementById('cEmail').value;
+  const msg = document.getElementById('cMsg').value;
   const myEmail = 'you@example.com'; // ✏️ غيّر بريدك هنا
   const subject = encodeURIComponent(`رسالة من ${name}`);
   const body = encodeURIComponent(`الاسم: ${name}\nالبريد: ${email}\n\nالرسالة:\n${msg}`);
@@ -646,10 +645,3 @@ function sendMessage(e) {
 </script>
 </body>
 </html>
-```
-
-ما الذي تغير في هذا الإصدار؟
-
-· عداد التقدم (Gauge): أصبح يعتمد على تقنية SVG. عندما تحرك شريط التمرير (Slider) أسفل العداد، سترى القوس الملون يمتلئ تدريجياً ويتغير لونه من الأحمر (1/10) إلى الأخضر (10/10) بسلاسة تامة، مع تغير الرقم في المنتصف.
-· المواد: تظهر كأزرار أسفل العداد، وعند الضغط على أي مادة، يتذكرها العداد ويحفظ تقييمها.
-· الكويز: تم إصلاحه ليعمل فور رفع ملف PDF.
