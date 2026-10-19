@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ملخصاتي الطبية | Medical Summaries</title>
 
+<!-- مكتبة قراءة ملفات الـ PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script>
+  // تحديد مسار ملفات عمل المكتبة
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+</script>
+
 <script type="text/javascript">
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({pageLanguage: 'ar', includedLanguages: 'ar,fr,en,es,de'}, 'google_translate_element');
@@ -21,6 +28,7 @@ function googleTranslateElementInit() {
     --text: #1a1a1a;
     --shadow: 0 4px 14px rgba(0, 180, 216, 0.15);
     --red: #e74c3c;
+    --orange: #f39c12;
     --yellow: #f1c40f;
     --green: #2ecc71;
   }
@@ -29,7 +37,9 @@ function googleTranslateElementInit() {
 
   body {
     font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-    background: var(--sky-blue-light);
+    background-color: var(--sky-blue-light);
+    /* إضافة رسمة خلفية طبية خفيفة */
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300b4d8' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     color: var(--text);
     line-height: 1.7;
     min-height: 100vh;
@@ -45,7 +55,8 @@ function googleTranslateElementInit() {
   .login-box h2 { color: var(--sky-blue-dark); margin-bottom: 20px; }
   .login-box input { width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid var(--sky-blue-light); border-radius: 10px; font-size: 1rem; outline: none; }
   .login-box input:focus { border-color: var(--sky-blue); }
-  .login-box button { width: 100%; padding: 12px; background: var(--sky-blue); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
+  .login-box button { width: 100%; padding: 12px; background: var(--sky-blue); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
+  .login-box button:hover { background: var(--sky-blue-dark); }
 
   /* ===== شريط علوي ===== */
   header { background: linear-gradient(90deg, var(--sky-blue-dark), var(--sky-blue)); color: white; padding: 18px 22px; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
@@ -63,12 +74,16 @@ function googleTranslateElementInit() {
   .search-box button { background: var(--sky-blue); color: white; border: none; border-radius: 30px; padding: 10px 20px; cursor: pointer; font-weight: bold; }
 
   main { max-width: 1100px; margin: auto; padding: 24px 22px 60px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; align-items: start; }
-  section { background: var(--white); border-radius: 16px; padding: 24px; box-shadow: var(--shadow); border-top: 5px solid var(--sky-blue); animation: fadeUp 0.6s ease both; }
+  section { background: var(--white); border-radius: 16px; padding: 24px; box-shadow: var(--shadow); border-top: 5px solid var(--sky-blue); animation: fadeUp 0.6s ease both; position: relative; overflow: hidden; }
+  
+  /* رسمة خلفية لكل قسم */
+  section::after {
+    content: "⚕️"; position: absolute; bottom: -10px; left: -10px; font-size: 5rem; opacity: 0.05; pointer-events: none;
+  }
+  
   .full-width { grid-column: 1 / -1; }
-
   @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-  h2 { color: var(--sky-blue-dark); font-size: 1.35rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-  h3 { color: var(--sky-blue); margin: 18px 0 8px; font-size: 1.1rem; }
+  h2 { color: var(--sky-blue-dark); font-size: 1.35rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; border-bottom: 2px dashed var(--sky-blue-light); padding-bottom: 8px; }
   .highlight-blue { background: var(--sky-blue-light); border-right: 4px solid var(--sky-blue); padding: 10px 14px; border-radius: 8px; margin: 10px 0; }
 
   /* ===== عداد الإنجازات (Gauge) ===== */
@@ -93,37 +108,29 @@ function googleTranslateElementInit() {
   /* ===== المترجم ===== */
   .translator-box { display: flex; flex-direction: column; gap: 10px; }
   .translator-box input, .translator-box select { padding: 12px; border: 2px solid var(--sky-blue-light); border-radius: 10px; font-size: 1rem; outline: none; }
-  .translator-box button { background: var(--sky-blue-dark); color: white; border: none; border-radius: 10px; padding: 12px; cursor: pointer; font-weight: bold; }
+  .translator-box button { background: var(--sky-blue-dark); color: white; border: none; border-radius: 10px; padding: 12px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+  .translator-box button:hover { background: var(--sky-blue); }
   .translation-result { margin-top: 14px; background: var(--sky-blue-light); padding: 16px; border-radius: 10px; border-right: 4px solid var(--sky-blue-dark); font-weight: bold; color: var(--sky-blue-dark); display: none; }
 
   /* ===== الكويزات ===== */
-  .quiz-section { display: none; margin-top: 20px; background: #fff3cd; padding: 20px; border-radius: 12px; border-right: 5px solid #ffc107; }
-  .quiz-options button { display: block; width: 100%; padding: 10px; margin-bottom: 8px; text-align: right; background: white; border: 2px solid #ffeeba; border-radius: 8px; font-size: 1rem; cursor: pointer; }
+  .quiz-setup { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; align-items: center; }
+  .quiz-setup input { width: 80px; padding: 8px; border: 2px solid var(--sky-blue-light); border-radius: 8px; text-align: center; font-weight: bold; }
+  .quiz-section { display: none; margin-top: 20px; background: #f8fbff; padding: 20px; border-radius: 12px; border: 2px solid var(--sky-blue); }
+  .quiz-question { font-weight: bold; margin-bottom: 15px; font-size: 1.1rem; color: var(--sky-blue-dark); }
+  .quiz-options button { display: block; width: 100%; padding: 12px; margin-bottom: 8px; text-align: right; background: white; border: 2px solid var(--sky-blue-light); border-radius: 8px; font-size: 1rem; cursor: pointer; transition: 0.2s; }
+  .quiz-options button:hover { background: var(--sky-blue-light); }
   .quiz-options button.correct { background: #d4edda; border-color: #c3e6cb; color: #155724; }
   .quiz-options button.wrong { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
 
-  /* ===== التقويم ===== */
-  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 14px; }
-  .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-  .cal-header button { background: var(--sky-blue); color: white; border: none; border-radius: 8px; padding: 6px 10px; cursor: pointer; font-weight: bold; }
-  .cal-header .month-year { font-weight: bold; color: var(--sky-blue-dark); font-size: 1rem; }
-  .cal-day-name { text-align: center; font-size: 0.7rem; color: var(--sky-blue-dark); font-weight: bold; padding: 4px 0; }
-  .cal-cell { background: var(--sky-blue-light); border-radius: 8px; min-height: 45px; padding: 4px; font-size: 0.8rem; position: relative; cursor: pointer; text-align: center; }
-  .cal-cell.empty { background: transparent; cursor: default; }
-  .cal-cell.today { background: var(--sky-blue); color: white; font-weight: bold; }
-  .cal-cell .event-dot { display: block; width: 6px; height: 6px; background: var(--red); border-radius: 50%; margin: 2px auto 0; }
-  .event-list { margin-top: 10px; }
-  .event-item { background: var(--sky-blue-light); border-right: 4px solid var(--red); padding: 8px; border-radius: 8px; margin-bottom: 6px; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
-  .event-item button { background: var(--red); color: white; border: none; border-radius: 6px; padding: 2px 8px; cursor: pointer; font-size: 0.7rem; }
-
-  /* ===== الآلة الحاسبة ===== */
-  .calc-container { max-width: 280px; margin: 0 auto; background: #f8f9fa; border-radius: 16px; padding: 12px; }
-  .calc-screen { background: var(--sky-blue-dark); color: white; font-size: 1.8rem; text-align: left; padding: 10px; border-radius: 10px; margin-bottom: 12px; direction: ltr; min-height: 55px; }
-  .calc-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-  .calc-buttons button { padding: 12px 0; font-size: 1.1rem; border: none; border-radius: 8px; background: white; cursor: pointer; font-weight: bold; }
-  .calc-buttons button.operator { background: var(--sky-blue-light); color: var(--sky-blue-dark); }
-  .calc-buttons button.equal { background: var(--sky-blue); color: white; grid-column: span 2; }
-  .calc-buttons button.clear { background: #ffeaa7; color: #d35400; }
+  /* ===== الآلة الحاسبة (محدثة) ===== */
+  .calc-container { max-width: 320px; margin: 0 auto; background: #2b2b2b; border-radius: 20px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+  .calc-screen { background: #1e1e1e; color: #fff; font-size: 2.2rem; text-align: left; padding: 15px; border-radius: 10px; margin-bottom: 15px; direction: ltr; min-height: 70px; word-break: break-all; font-family: 'Courier New', Courier, monospace; }
+  .calc-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .calc-buttons button { padding: 15px 0; font-size: 1.3rem; border: none; border-radius: 50px; background: #3b3b3b; color: white; cursor: pointer; font-weight: bold; transition: 0.2s; }
+  .calc-buttons button:active { transform: scale(0.9); }
+  .calc-buttons button.operator { background: var(--orange); color: white; }
+  .calc-buttons button.equal { background: var(--green); color: white; grid-column: span 2; }
+  .calc-buttons button.clear { background: var(--red); color: white; }
 
   /* ===== النصائح والروابط ===== */
   .add-tip-box { display: flex; gap: 8px; margin-bottom: 16px; }
@@ -132,15 +139,18 @@ function googleTranslateElementInit() {
   .tip-card { background: var(--sky-blue-light); border-radius: 12px; padding: 12px; border-left: 4px solid var(--sky-blue-dark); margin-bottom: 10px; position: relative; font-size: 0.9rem; }
   .tip-card .tip-author { font-size: 0.75rem; color: var(--sky-blue-dark); font-weight: bold; margin-bottom: 5px; display: block; }
   .tip-card button { position: absolute; top: 10px; left: 10px; background: var(--red); color: white; border: none; border-radius: 6px; padding: 2px 6px; cursor: pointer; font-size: 0.7rem; }
+  
   .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
-  .social-card { display: flex; flex-direction: column; align-items: center; padding: 10px; border-radius: 10px; text-decoration: none; color: white; font-weight: bold; font-size: 0.8rem; }
+  .social-card { display: flex; flex-direction: column; align-items: center; padding: 10px; border-radius: 10px; text-decoration: none; color: white; font-weight: bold; font-size: 0.8rem; transition: 0.3s; }
+  .social-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
   .s-telegram { background: #0088cc; } .s-phone { background: var(--sky-blue-dark); } .s-whatsapp { background: #25d366; }
   .s-facebook { background: #1877f2; } .s-instagram { background: linear-gradient(45deg,#f09433,#dc2743); } .s-github { background: #24292e; }
 
-  .upload-zone { border: 2px dashed var(--sky-blue); border-radius: 14px; padding: 20px; text-align: center; background: var(--sky-blue-light); cursor: pointer; }
+  .upload-zone { border: 2px dashed var(--sky-blue); border-radius: 14px; padding: 20px; text-align: center; background: var(--sky-blue-light); cursor: pointer; transition: 0.3s; }
+  .upload-zone:hover { background: #b2ebf2; }
   .file-item { display: flex; justify-content: space-between; background: var(--sky-blue-light); padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 0.9rem; }
   
-  .back-top { position: fixed; bottom: 20px; left: 20px; background: var(--sky-blue); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
+  .back-top { position: fixed; bottom: 20px; left: 20px; background: var(--sky-blue); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; box-shadow: var(--shadow); }
   footer { text-align: center; padding: 20px; color: #0077b6; font-size: 0.8rem; grid-column: 1 / -1; }
 </style>
 </head>
@@ -151,8 +161,8 @@ function googleTranslateElementInit() {
   <div class="login-box">
     <h2>🩺 مرحباً بك</h2>
     <p style="margin-bottom: 20px; color: #555; font-size: 0.9rem;">أدخل معلوماتك للدخول إلى المنصة.</p>
-    <input type="text" id="nameInput" placeholder="الاسم واللقب (مثال: أحمد بن علي)">
-    <input type="email" id="emailInput" placeholder="البريد الإلكتروني (example@email.com)">
+    <input type="text" id="nameInput" placeholder="الاسم واللقب">
+    <input type="email" id="emailInput" placeholder="البريد الإلكتروني">
     <button onclick="loginUser()">دخول</button>
   </div>
 </div>
@@ -176,18 +186,24 @@ function googleTranslateElementInit() {
   </div>
 
   <main>
-    <!-- 1. إضافة الملخصات + الكويز -->
+    <!-- 1. إضافة الملخصات والكويز الحقيقي -->
     <section class="full-width">
-      <h2><span class="ico">📁</span> إضافة ملخصات (توليد كويز تلقائي)</h2>
+      <h2><span class="ico">📁</span> الكويز التفاعلي (يقرأ محتوى PDF)</h2>
+      <p style="margin-bottom: 10px; font-size: 0.9rem; color: #555;">ارفع ملف PDF، وحدد عدد الأسئلة، وسيقوم الموقع باستخراج النص وتوليد كويز حقيقي بخمسة خيارات لكل سؤال.</p>
+      
+      <div class="quiz-setup">
+        <label>عدد الأسئلة:</label>
+        <input type="number" id="numQuestions" value="3" min="1" max="10">
+      </div>
+
       <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
         <span style="font-size: 2rem;">📤</span><br><strong>اضغط لاختيار ملف PDF</strong>
-        <p style="font-size:0.8rem; color:#555; margin-top:5px;">سيتم توليد كويز بناءً على اسم الملف</p>
       </div>
-      <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="addFiles(event)">
+      <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="generateQuiz(event)">
       <div class="file-list" id="fileList"></div>
       
       <div class="quiz-section" id="quizSection">
-        <h3>🎯 كويز تلقائي: <span id="quizFileName"></span></h3>
+        <h3>🎯 كويز: <span id="quizFileName"></span></h3>
         <div id="quizContent"></div>
       </div>
     </section>
@@ -274,10 +290,10 @@ function googleTranslateElementInit() {
     <section>
       <h2><span class="ico">📝</span> تواصل</h2>
       <form class="contact-form" onsubmit="sendMessage(event)">
-        <label>الاسم</label><input type="text" id="cName" required>
-        <label>البريد</label><input type="email" id="cEmail" required>
-        <label>الرسالة</label><textarea id="cMsg" required rows="3"></textarea>
-        <button type="submit" style="background:var(--sky-blue-dark); color:white; border:none; padding:10px; border-radius:8px; cursor:pointer;">إرسال</button>
+        <label>الاسم</label><input type="text" id="cName" required style="width:100%; padding:8px; margin-bottom:8px; border-radius:8px; border:1px solid #ccc;">
+        <label>البريد</label><input type="email" id="cEmail" required style="width:100%; padding:8px; margin-bottom:8px; border-radius:8px; border:1px solid #ccc;">
+        <label>الرسالة</label><textarea id="cMsg" required rows="3" style="width:100%; padding:8px; margin-bottom:8px; border-radius:8px; border:1px solid #ccc;"></textarea>
+        <button type="submit" style="background:var(--sky-blue-dark); color:white; border:none; padding:10px; border-radius:8px; cursor:pointer; width:100%;">إرسال</button>
       </form>
     </section>
 
@@ -294,7 +310,7 @@ function googleTranslateElementInit() {
       </div>
     </section>
 
-    <!-- 10. الآلة الحاسبة -->
+    <!-- 10. الآلة الحاسبة (الأسفل) -->
     <section class="full-width">
       <h2><span class="ico">🧮</span> آلة حاسبة</h2>
       <div class="calc-container">
@@ -323,13 +339,10 @@ function googleTranslateElementInit() {
 function loginUser() {
   const name = document.getElementById('nameInput').value.trim();
   const email = document.getElementById('emailInput').value.trim();
-  
   if (!name || name.length < 3) { alert('يرجى إدخال الاسم واللقب.'); return; }
   if (!email || !email.includes('@')) { alert('يرجى إدخال بريد إلكتروني صالح.'); return; }
-  
   localStorage.setItem('userName', name);
   localStorage.setItem('userEmail', email);
-  
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('main-site').style.display = 'block';
   initApp();
@@ -415,10 +428,8 @@ function updateGauge(value, save = true) {
   let color = getColor(value);
   document.getElementById('gaugeScore').textContent = value + '/10';
   document.getElementById('gaugeScore').style.color = color;
-  
   const maxOffset = 251;
   const offset = maxOffset - (value / 10) * maxOffset;
-  
   const path = document.getElementById('gaugePath');
   path.style.stroke = color;
   path.style.strokeDashoffset = offset;
@@ -493,7 +504,6 @@ function deleteEvent(key, i) {
   if (!events[key].length) delete events[key];
   saveEvents(); renderCalendar();
 }
-
 function prevMonth() { currentMonth--; if (currentMonth < 0) { currentMonth = 11; currentYear--; } renderCalendar(); }
 function nextMonth() { currentMonth++; if (currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(); }
 
@@ -513,7 +523,7 @@ async function translateText() {
   } catch (error) { resultBox.textContent = '❌ خطأ في الاتصال.'; }
 }
 
-/* ===================== النصائح (مع اسم الطالب) ===================== */
+/* ===================== النصائح ===================== */
 let tips = JSON.parse(localStorage.getItem('userTips') || 'null') || [
   { text: 'اقرأ بانتظام: خصص 30 دقيقة يومياً للمراجعة.', author: 'النظام' },
   { text: 'استخدم الخرائط الذهنية لربط المعلومات.', author: 'النظام' }
@@ -524,11 +534,7 @@ function renderTips() {
   tips.forEach((t, i) => {
     const div = document.createElement('div');
     div.className = 'tip-card';
-    div.innerHTML = `
-      <span class="tip-author">👤 ${t.author}</span>
-      <p>${t.text}</p>
-      <button onclick="deleteTip(${i})">حذف</button>
-    `;
+    div.innerHTML = `<span class="tip-author">👤 ${t.author}</span><p>${t.text}</p><button onclick="deleteTip(${i})">حذف</button>`;
     grid.appendChild(div);
   });
 }
@@ -536,7 +542,6 @@ function addNewTip() {
   const input = document.getElementById('newTipInput');
   const text = input.value.trim();
   if (!text) return;
-  
   const author = localStorage.getItem('userName') || 'طالب مجهول';
   tips.push({ text: text, author: author });
   localStorage.setItem('userTips', JSON.stringify(tips));
@@ -558,76 +563,105 @@ function calcEqual() {
   } catch (e) { calcCurrent = 'خطأ'; updateCalcScreen(); setTimeout(calcClear, 1500); }
 }
 
-/* ===================== الكويزات التفاعلية (قراءة اسم الملف) ===================== */
-function addFiles(event) {
+/* ===================== الكويز التفاعلي (قراءة الـ PDF) ===================== */
+async function generateQuiz(event) {
   const file = event.target.files[0];
   if (!file) return;
-  
-  const list = document.getElementById('fileList');
-  list.innerHTML = `<div class="file-item"><span>📄 ${file.name}</span></div>`;
 
-  document.getElementById('quizSection').style.display = 'block';
-  const fileName = file.name.replace('.pdf', '').replace('.PDF', '');
-  document.getElementById('quizFileName').textContent = fileName;
-  
+  const quizSection = document.getElementById('quizSection');
   const quizContent = document.getElementById('quizContent');
-  const lowerName = fileName.toLowerCase();
+  const fileList = document.getElementById('fileList');
   
-  let qText = "";
-  let correct = "";
-  let wrong1 = "";
-  let wrong2 = "";
+  fileList.innerHTML = `<div class="file-item"><span>📄 ${file.name}</span></div>`;
+  document.getElementById('quizFileName').textContent = file.name;
+  quizSection.style.display = 'block';
+  quizContent.innerHTML = '<p style="text-align:center; color:var(--sky-blue-dark); font-weight:bold;">⏳ جاري قراءة الملف واستخراج النص...</p>';
 
-  // توليد الأسئلة بناءً على اسم الملف
-  if (lowerName.includes('anapath') || lowerName.includes('anatomo')) {
-    qText = "ما هو العلم الذي يدرس التغيرات المرضية في الأنسجة؟";
-    correct = "علم التشريح المرضي (Anapath)";
-    wrong1 = "علم وظائف الأعضاء (Physio)";
-    wrong2 = "علم الأدوية (Pharmaco)";
-  } else if (lowerName.includes('physio')) {
-    qText = "ما هو العلم الذي يدرس وظائف أعضاء الجسم؟";
-    correct = "علم وظائف الأعضاء (Physiologie)";
-    wrong1 = "علم التشريح (Anatomie)";
-    wrong2 = "علم الأحياء الدقيقة (Microbiologie)";
-  } else if (lowerName.includes('semiologie') || lowerName.includes('semi')) {
-    qText = "ما هو العلم الذي يدرس علامات وأعراض الأمراض؟";
-    correct = "علم السيميولوجيا (Sémiologie)";
-    wrong1 = "علم الطفيليات (Parasitologie)";
-    wrong2 = "علم المناعة (Immunologie)";
-  } else if (lowerName.includes('micro') || lowerName.includes('bacteri')) {
-    qText = "ما هو العلم الذي يدرس البكتيريا والفيروسات؟";
-    correct = "علم الأحياء الدقيقة (Microbiologie)";
-    wrong1 = "علم الأنسجة (Histologie)";
-    wrong2 = "علم الصيدلة (Pharmacologie)";
-  } else {
-    qText = `ما هو الموضوع الأساسي لملف "${fileName}"؟`;
-    correct = "موضوع طبي متخصص (إجابة صحيحة)";
-    wrong1 = "موضوع تاريخي (إجابة خاطئة)";
-    wrong2 = "موضوع رياضي (إجابة خاطئة)";
+  const numQuestions = parseInt(document.getElementById('numQuestions').value) || 3;
+
+  try {
+    // قراءة الملف
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+    let fullText = '';
+
+    // استخراج النص من كل صفحة (بحد أقصى 5 صفحات لتسريع العملية)
+    const maxPages = Math.min(pdf.numPages, 5);
+    for (let i = 1; i <= maxPages; i++) {
+      const page = await pdf.getPage(i);
+      const textContent = await page.getTextContent();
+      const pageText = textContent.items.map(item => item.str).join(' ');
+      fullText += pageText + ' ';
+    }
+
+    // تنظيف النص وتقسيمه لكلمات
+    const words = fullText.replace(/[^\u0600-\u06FFa-zA-Z\s]/g, '').split(/\s+/).filter(w => w.length > 3);
+    
+    if (words.length < 10) {
+      quizContent.innerHTML = '<p style="color:red; text-align:center;">⚠️ الملف لا يحتوي على نص كافٍ. (قد يكون الملف عبارة عن صور ممسوحة ضوئياً).</p>';
+      return;
+    }
+
+    // سحب كلمات عشوائية لتكون الإجابات الصحيحة
+    const uniqueWords = [...new Set(words)];
+    const shuffledWords = uniqueWords.sort(() => 0.5 - Math.random());
+    
+    // توليد الأسئلة
+    let quizHTML = '';
+    for (let i = 0; i < numQuestions; i++) {
+      if (!shuffledWords[i]) break;
+      
+      const correctAnswer = shuffledWords[i];
+      
+      // توليد 4 إجابات خاطئة عشوائية
+      let wrongAnswers = [];
+      while (wrongAnswers.length < 4) {
+        const randomWord = uniqueWords[Math.floor(Math.random() * uniqueWords.length)];
+        if (randomWord !== correctAnswer && !wrongAnswers.includes(randomWord)) {
+          wrongAnswers.push(randomWord);
+        }
+      }
+
+      // دمج الإجابات وخلطها
+      const allOptions = [correctAnswer, ...wrongAnswers].sort(() => 0.5 - Math.random());
+
+      // بناءً على الكلمة، نصنع سؤالاً
+      quizHTML += `
+        <div class="quiz-question" style="margin-top:20px;">سؤال ${i+1}: أي من هذه الكلمات وردت في الملف؟ (الكلمة الصحيحة هي "${correctAnswer.substring(0,2)}...")</div>
+        <div class="quiz-options">
+      `;
+      
+      allOptions.forEach(opt => {
+        const isCorrect = opt === correctAnswer;
+        quizHTML += `<button onclick="checkAnswer(this, ${isCorrect})">${opt}</button>`;
+      });
+      
+      quizHTML += `</div>`;
+    }
+
+    quizContent.innerHTML = quizHTML;
+
+  } catch (error) {
+    console.error(error);
+    quizContent.innerHTML = '<p style="color:red; text-align:center;">❌ حدث خطأ أثناء معالجة الملف. تأكد من أنه ملف PDF صالح.</p>';
   }
-
-  quizContent.innerHTML = `
-    <div class="quiz-question">${qText}</div>
-    <div class="quiz-options">
-      <button onclick="checkAnswer(this, false)">${wrong1}</button>
-      <button onclick="checkAnswer(this, true)">${correct}</button>
-      <button onclick="checkAnswer(this, false)">${wrong2}</button>
-    </div>
-  `;
 }
 
 function checkAnswer(btn, isCorrect) {
-  const options = btn.parentElement.querySelectorAll('button');
+  const parent = btn.parentElement;
+  if (parent.classList.contains('answered')) return;
+  parent.classList.add('answered');
+  
+  const options = parent.querySelectorAll('button');
   options.forEach(b => b.disabled = true);
+  
   if (isCorrect) {
     btn.classList.add('correct');
-    alert('✅ إجابة صحيحة! أحسنت.');
   } else {
     btn.classList.add('wrong');
     options.forEach(b => {
       if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
     });
-    alert('❌ إجابة خاطئة. الإجابة الصحيحة مظللة بالأخضر.');
   }
 }
 
