@@ -8,10 +8,10 @@
 <!-- مكتبة قراءة ملفات الـ PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 <script>
-  // تحديد مسار ملفات عمل المكتبة
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 </script>
 
+<!-- Google Translate -->
 <script type="text/javascript">
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({pageLanguage: 'ar', includedLanguages: 'ar,fr,en,es,de'}, 'google_translate_element');
@@ -26,7 +26,7 @@ function googleTranslateElementInit() {
     --sky-blue-light: #e0f7fa;
     --white: #ffffff;
     --text: #1a1a1a;
-    --shadow: 0 4px 14px rgba(0, 180, 216, 0.15);
+    --shadow: 0 4px 14px rgba(0, 180, 216, 0.1);
     --red: #e74c3c;
     --orange: #f39c12;
     --yellow: #f1c40f;
@@ -38,19 +38,15 @@ function googleTranslateElementInit() {
   body {
     font-family: "Segoe UI", Tahoma, Arial, sans-serif;
     background-color: var(--sky-blue-light);
-    /* إضافة رسمة خلفية طبية خفيفة */
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300b4d8' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    /* خلفية تحتوي على رموز طبية (قلب، رئة، دماغ، إلخ) */
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2300b4d8' fill-opacity='0.05'%3E%3Cpath d='M50 30c-5-10-20-10-20 0 0 10 20 30 20 30s20-20 20-30c0-10-15-10-20 0z'/%3E%3Cpath d='M20 70a10 10 0 0 1 20 0v10H20z'/%3E%3Cpath d='M60 70a10 10 0 0 1 20 0v10H60z'/%3E%3Ccircle cx='50' cy='85' r='5'/%3E%3C/g%3E%3C/svg%3E");
     color: var(--text);
     line-height: 1.7;
     min-height: 100vh;
   }
 
   /* ===== شاشة تسجيل الدخول ===== */
-  #login-screen {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(135deg, var(--sky-blue-dark), var(--sky-blue));
-    display: flex; justify-content: center; align-items: center; z-index: 1000;
-  }
+  #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--sky-blue-dark), var(--sky-blue)); display: flex; justify-content: center; align-items: center; z-index: 1000; }
   .login-box { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 90%; max-width: 400px; text-align: center; }
   .login-box h2 { color: var(--sky-blue-dark); margin-bottom: 20px; }
   .login-box input { width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid var(--sky-blue-light); border-radius: 10px; font-size: 1rem; outline: none; }
@@ -63,6 +59,12 @@ function googleTranslateElementInit() {
   header h1 { font-size: 1.4rem; display: flex; align-items: center; gap: 8px; }
   header h1::before { content: "🩺"; font-size: 1.6rem; }
   .header-tools { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  
+  .flag-container { width: 40px; height: 26px; overflow: hidden; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+  .algeria-flag { width: 100%; height: 100%; background: linear-gradient(to right, #006233 50%, #ffffff 50%); position: relative; animation: wave 3s infinite linear; }
+  .algeria-flag::before { content: "☪"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #d21034; font-size: 16px; }
+  @keyframes wave { 0% { transform: skewX(0deg); } 50% { transform: skewX(-10deg); } 100% { transform: skewX(0deg); } }
+
   .clock-box, .athkar-box { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); padding: 6px 14px; border-radius: 30px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(6px); }
   .athkar-box { background: #ffeaa7; color: #d35400; font-weight: bold; border-color: #fdcb6e; max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   #google_translate_element { background: white; border-radius: 6px; padding: 2px 6px; }
@@ -74,19 +76,33 @@ function googleTranslateElementInit() {
   .search-box button { background: var(--sky-blue); color: white; border: none; border-radius: 30px; padding: 10px 20px; cursor: pointer; font-weight: bold; }
 
   main { max-width: 1100px; margin: auto; padding: 24px 22px 60px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; align-items: start; }
-  section { background: var(--white); border-radius: 16px; padding: 24px; box-shadow: var(--shadow); border-top: 5px solid var(--sky-blue); animation: fadeUp 0.6s ease both; position: relative; overflow: hidden; }
-  
-  /* رسمة خلفية لكل قسم */
-  section::after {
-    content: "⚕️"; position: absolute; bottom: -10px; left: -10px; font-size: 5rem; opacity: 0.05; pointer-events: none;
-  }
-  
+  section { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border-radius: 16px; padding: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.8); animation: fadeUp 0.6s ease both; position: relative; overflow: hidden; }
   .full-width { grid-column: 1 / -1; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-  h2 { color: var(--sky-blue-dark); font-size: 1.35rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; border-bottom: 2px dashed var(--sky-blue-light); padding-bottom: 8px; }
-  .highlight-blue { background: var(--sky-blue-light); border-right: 4px solid var(--sky-blue); padding: 10px 14px; border-radius: 8px; margin: 10px 0; }
+  h2 { color: var(--sky-blue-dark); font-size: 1.35rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; border-bottom: 2px dashed rgba(0, 180, 216, 0.3); padding-bottom: 8px; }
 
-  /* ===== عداد الإنجازات (Gauge) ===== */
+  /* ===== الكويز الذكي ===== */
+  .quiz-section { display: none; margin-top: 20px; background: rgba(255,255,255,0.9); padding: 20px; border-radius: 12px; border-right: 5px solid var(--sky-blue); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+  .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: bold; color: var(--sky-blue-dark); }
+  .quiz-question { font-weight: bold; margin-bottom: 15px; font-size: 1.1rem; color: var(--text); }
+  .quiz-options button { display: block; width: 100%; padding: 12px; margin-bottom: 8px; text-align: right; background: white; border: 2px solid var(--sky-blue-light); border-radius: 8px; font-size: 1rem; cursor: pointer; transition: 0.2s; }
+  .quiz-options button:hover:not([disabled]) { background: var(--sky-blue-light); }
+  .quiz-options button.correct { background: #d4edda; border-color: #c3e6cb; color: #155724; font-weight: bold; }
+  .quiz-options button.wrong { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+  .quiz-explanation { display: none; margin-top: 15px; padding: 15px; background: #fff3cd; border-radius: 8px; border-right: 4px solid var(--orange); font-size: 0.95rem; }
+  .quiz-explanation strong { color: var(--sky-blue-dark); }
+  .quiz-next-btn { display: none; width: 100%; padding: 12px; background: var(--sky-blue); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 15px; }
+  .quiz-result { text-align: center; padding: 20px; display: none; }
+  .quiz-result h3 { font-size: 1.5rem; color: var(--sky-blue-dark); margin-bottom: 10px; }
+  .quiz-result .score { font-size: 2rem; font-weight: bold; color: var(--green); margin-bottom: 10px; }
+  .quiz-result button { background: var(--sky-blue-dark); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+  /* API Key Box */
+  .api-box { background: #fff3cd; border: 2px solid var(--orange); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+  .api-box input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 10px; font-family: monospace; }
+  .api-box button { background: var(--orange); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+  /* ===== العداد ===== */
   .gauge-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
   .gauge-title { font-weight: bold; color: var(--sky-blue-dark); margin-bottom: 10px; font-size: 1.1rem; }
   .gauge-wrapper { position: relative; width: 220px; height: 130px; }
@@ -99,32 +115,31 @@ function googleTranslateElementInit() {
   .subject-btn .emoji { font-size: 1.5rem; display: block; margin-bottom: 5px; }
   .subject-btn .name { font-size: 0.75rem; font-weight: bold; color: var(--sky-blue-dark); }
 
-  /* ===== الجداول ===== */
+  /* ===== أخرى ===== */
   table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.95rem; border-radius: 10px; overflow: hidden; }
   th { background: linear-gradient(90deg, var(--sky-blue-dark), var(--sky-blue)); color: white; padding: 10px 12px; text-align: right; }
   td { padding: 9px 12px; border-bottom: 1px solid var(--sky-blue-light); }
   tr:nth-child(even) td { background: #f7fdff; }
-
-  /* ===== المترجم ===== */
   .translator-box { display: flex; flex-direction: column; gap: 10px; }
   .translator-box input, .translator-box select { padding: 12px; border: 2px solid var(--sky-blue-light); border-radius: 10px; font-size: 1rem; outline: none; }
   .translator-box button { background: var(--sky-blue-dark); color: white; border: none; border-radius: 10px; padding: 12px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-  .translator-box button:hover { background: var(--sky-blue); }
   .translation-result { margin-top: 14px; background: var(--sky-blue-light); padding: 16px; border-radius: 10px; border-right: 4px solid var(--sky-blue-dark); font-weight: bold; color: var(--sky-blue-dark); display: none; }
 
-  /* ===== الكويزات ===== */
-  .quiz-setup { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; align-items: center; }
-  .quiz-setup input { width: 80px; padding: 8px; border: 2px solid var(--sky-blue-light); border-radius: 8px; text-align: center; font-weight: bold; }
-  .quiz-section { display: none; margin-top: 20px; background: #f8fbff; padding: 20px; border-radius: 12px; border: 2px solid var(--sky-blue); }
-  .quiz-question { font-weight: bold; margin-bottom: 15px; font-size: 1.1rem; color: var(--sky-blue-dark); }
-  .quiz-options button { display: block; width: 100%; padding: 12px; margin-bottom: 8px; text-align: right; background: white; border: 2px solid var(--sky-blue-light); border-radius: 8px; font-size: 1rem; cursor: pointer; transition: 0.2s; }
-  .quiz-options button:hover { background: var(--sky-blue-light); }
-  .quiz-options button.correct { background: #d4edda; border-color: #c3e6cb; color: #155724; }
-  .quiz-options button.wrong { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 14px; }
+  .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .cal-header button { background: var(--sky-blue); color: white; border: none; border-radius: 8px; padding: 6px 10px; cursor: pointer; font-weight: bold; }
+  .cal-header .month-year { font-weight: bold; color: var(--sky-blue-dark); font-size: 1rem; }
+  .cal-day-name { text-align: center; font-size: 0.7rem; color: var(--sky-blue-dark); font-weight: bold; padding: 4px 0; }
+  .cal-cell { background: var(--sky-blue-light); border-radius: 8px; min-height: 45px; padding: 4px; font-size: 0.8rem; position: relative; cursor: pointer; text-align: center; }
+  .cal-cell.empty { background: transparent; cursor: default; }
+  .cal-cell.today { background: var(--sky-blue); color: white; font-weight: bold; }
+  .cal-cell .event-dot { display: block; width: 6px; height: 6px; background: var(--red); border-radius: 50%; margin: 2px auto 0; }
+  .event-list { margin-top: 10px; }
+  .event-item { background: var(--sky-blue-light); border-right: 4px solid var(--red); padding: 8px; border-radius: 8px; margin-bottom: 6px; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
+  .event-item button { background: var(--red); color: white; border: none; border-radius: 6px; padding: 2px 8px; cursor: pointer; font-size: 0.7rem; }
 
-  /* ===== الآلة الحاسبة (محدثة) ===== */
-  .calc-container { max-width: 320px; margin: 0 auto; background: #2b2b2b; border-radius: 20px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-  .calc-screen { background: #1e1e1e; color: #fff; font-size: 2.2rem; text-align: left; padding: 15px; border-radius: 10px; margin-bottom: 15px; direction: ltr; min-height: 70px; word-break: break-all; font-family: 'Courier New', Courier, monospace; }
+  .calc-container { max-width: 300px; margin: 0 auto; background: #2b2b2b; border-radius: 20px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+  .calc-screen { background: #1e1e1e; color: #fff; font-size: 2.2rem; text-align: left; padding: 15px; border-radius: 10px; margin-bottom: 15px; direction: ltr; min-height: 70px; font-family: 'Courier New', Courier, monospace; }
   .calc-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
   .calc-buttons button { padding: 15px 0; font-size: 1.3rem; border: none; border-radius: 50px; background: #3b3b3b; color: white; cursor: pointer; font-weight: bold; transition: 0.2s; }
   .calc-buttons button:active { transform: scale(0.9); }
@@ -132,7 +147,6 @@ function googleTranslateElementInit() {
   .calc-buttons button.equal { background: var(--green); color: white; grid-column: span 2; }
   .calc-buttons button.clear { background: var(--red); color: white; }
 
-  /* ===== النصائح والروابط ===== */
   .add-tip-box { display: flex; gap: 8px; margin-bottom: 16px; }
   .add-tip-box input { flex: 1; padding: 10px; border: 2px solid var(--sky-blue-light); border-radius: 10px; outline: none; }
   .add-tip-box button { background: var(--sky-blue); color: white; border: none; border-radius: 10px; padding: 10px 15px; font-weight: bold; cursor: pointer; }
@@ -156,7 +170,7 @@ function googleTranslateElementInit() {
 </head>
 <body>
 
-<!-- ======== شاشة تسجيل الدخول ======== -->
+<!-- شاشة تسجيل الدخول -->
 <div id="login-screen">
   <div class="login-box">
     <h2>🩺 مرحباً بك</h2>
@@ -167,10 +181,13 @@ function googleTranslateElementInit() {
   </div>
 </div>
 
-<!-- ======== الموقع ======== -->
+<!-- الموقع -->
 <div id="main-site" style="display: none;">
   <header>
-    <h1>ملخصاتي الطبية</h1>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div class="flag-container"><div class="algeria-flag"></div></div>
+      <h1>ملخصاتي الطبية</h1>
+    </div>
     <div class="header-tools">
       <div class="athkar-box" id="athkarBox">📿 جاري تحميل الأذكار...</div>
       <div class="clock-box"><span>🕐</span><span class="time" id="clock-time">--:--:--</span><span class="city" id="clock-city">📍</span></div>
@@ -186,29 +203,48 @@ function googleTranslateElementInit() {
   </div>
 
   <main>
-    <!-- 1. إضافة الملخصات والكويز الحقيقي -->
+    <!-- 1. الكويز الذكي -->
     <section class="full-width">
-      <h2><span class="ico">📁</span> الكويز التفاعلي (يقرأ محتوى PDF)</h2>
-      <p style="margin-bottom: 10px; font-size: 0.9rem; color: #555;">ارفع ملف PDF، وحدد عدد الأسئلة، وسيقوم الموقع باستخراج النص وتوليد كويز حقيقي بخمسة خيارات لكل سؤال.</p>
+      <h2><span class="ico">🧠</span> كويز طبي ذكي (Gemini AI)</h2>
+      <p style="margin-bottom: 10px; font-size: 0.9rem; color: #555;">ارفع ملف PDF، وسيقوم الذكاء الاصطناعي بتوليد أسئلة حقيقية من المحتوى.</p>
       
-      <div class="quiz-setup">
-        <label>عدد الأسئلة:</label>
-        <input type="number" id="numQuestions" value="3" min="1" max="10">
+      <!-- صندوق إدخال مفتاح API -->
+      <div class="api-box" id="apiKeyBox">
+        <strong style="display:block; margin-bottom:8px;">🔑 يرجى إدخال مفتاح Gemini API (يُطلب مرة واحدة فقط):</strong>
+        <input type="password" id="apiKeyInput" placeholder="AIzaSy...">
+        <button onclick="saveApiKey()">حفظ المفتاح</button>
+        <p style="font-size:0.75rem; margin-top:5px; color:#666;">احصل عليه مجاناً من: <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a></p>
       </div>
 
-      <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+      <div class="quiz-setup" style="display:flex; gap:10px; align-items:center; margin-bottom:15px;">
+        <label style="font-weight:bold; color:var(--sky-blue-dark);">عدد الأسئلة:</label>
+        <input type="number" id="numQuestions" value="5" min="1" max="15" style="width:80px; padding:8px; border-radius:8px; border:1px solid #ccc; text-align:center; font-weight:bold;">
+      </div>
+
+      <div class="upload-zone" onclick="checkApiKeyBeforeUpload()">
         <span style="font-size: 2rem;">📤</span><br><strong>اضغط لاختيار ملف PDF</strong>
       </div>
-      <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="generateQuiz(event)">
+      <input type="file" id="fileInput" accept=".pdf" style="display:none" onchange="generateAIQuiz(event)">
       <div class="file-list" id="fileList"></div>
       
       <div class="quiz-section" id="quizSection">
-        <h3>🎯 كويز: <span id="quizFileName"></span></h3>
+        <div class="quiz-header">
+          <span>🎯 كويز: <span id="quizFileName"></span></span>
+          <span id="quizProgress">السؤال 1</span>
+        </div>
         <div id="quizContent"></div>
+        <div class="quiz-explanation" id="quizExplanation"></div>
+        <button class="quiz-next-btn" id="quizNextBtn" onclick="nextQuestion()">السؤال التالي ➔</button>
+        <div class="quiz-result" id="quizResult">
+          <h3>🎉 انتهى الكويز!</h3>
+          <div class="score" id="finalScore">0 / 0</div>
+          <p id="finalMessage" style="margin-bottom:15px; font-weight:bold;"></p>
+          <button onclick="resetQuiz()">إعادة الكويز بملف آخر</button>
+        </div>
       </div>
     </section>
 
-    <!-- 2. عداد الإنجازات -->
+    <!-- 2. عداد التقدم -->
     <section>
       <h2><span class="ico">🏆</span> عداد التقدم</h2>
       <div class="gauge-container">
@@ -225,7 +261,17 @@ function googleTranslateElementInit() {
       <div class="subject-grid" id="subjectGrid"></div>
     </section>
 
-    <!-- 3. التقويم -->
+    <!-- 3. مؤقت المراجعة -->
+    <section>
+      <h2><span class="ico">⏱️</span> مؤقت المراجعة</h2>
+      <div style="text-align:center; padding:20px; background:var(--sky-blue-light); border-radius:12px;">
+        <div id="pomodoroDisplay" style="font-size:3rem; font-weight:bold; color:var(--sky-blue-dark); font-family:monospace;">25:00</div>
+        <button onclick="togglePomodoro()" id="pomodoroBtn" style="background:var(--green); color:white; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer; margin-top:10px;">بدء</button>
+        <button onclick="resetPomodoro()" style="background:var(--red); color:white; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer; margin-top:10px; margin-right:5px;">إعادة</button>
+      </div>
+    </section>
+
+    <!-- 4. التقويم -->
     <section>
       <h2><span class="ico">📅</span> التقويم الشهري</h2>
       <div class="cal-header">
@@ -240,7 +286,7 @@ function googleTranslateElementInit() {
       <div class="event-list" id="eventList"></div>
     </section>
 
-    <!-- 4. المترجم -->
+    <!-- 5. المترجم -->
     <section>
       <h2><span class="ico">🌐</span> مترجم</h2>
       <div class="translator-box">
@@ -255,16 +301,16 @@ function googleTranslateElementInit() {
       <div class="translation-result" id="translationResult"></div>
     </section>
 
-    <!-- 5. الدرايف -->
+    <!-- 6. الدرايف -->
     <section>
       <h2><span class="ico">☁️</span> ملفات الدرايف</h2>
-      <div class="highlight-blue" style="text-align: center;">
+      <div style="text-align: center;">
         <span style="font-size: 2rem; display: block; margin-bottom: 5px;">📂</span>
         <a href="https://drive.google.com/drive/folders/1OTIzlObe9MM9nWUYhYFsWiCX-Gx7HohA" target="_blank" style="display: inline-block; background: var(--sky-blue); color: white; text-decoration: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; margin-top: 10px;">فتح المجلد</a>
       </div>
     </section>
 
-    <!-- 6. النصائح -->
+    <!-- 7. النصائح -->
     <section>
       <h2><span class="ico">💡</span> نصائح</h2>
       <div class="add-tip-box">
@@ -274,7 +320,20 @@ function googleTranslateElementInit() {
       <div id="tipsGrid"></div>
     </section>
 
-    <!-- 7. علامات حيوية -->
+    <!-- 8. حاسبة المعدل -->
+    <section>
+      <h2><span class="ico">🎓</span> حاسبة المعدل</h2>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <input type="number" id="note1" placeholder="العلامة 1" style="padding:10px; border-radius:8px; border:1px solid #ccc;">
+        <input type="number" id="coef1" placeholder="المعامل 1" style="padding:10px; border-radius:8px; border:1px solid #ccc;">
+        <input type="number" id="note2" placeholder="العلامة 2" style="padding:10px; border-radius:8px; border:1px solid #ccc;">
+        <input type="number" id="coef2" placeholder="المعامل 2" style="padding:10px; border-radius:8px; border:1px solid #ccc;">
+        <button onclick="calcAverage()" style="background:var(--sky-blue-dark); color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">احسب المعدل</button>
+        <div id="avgResult" style="text-align:center; font-weight:bold; font-size:1.2rem; color:var(--green);"></div>
+      </div>
+    </section>
+
+    <!-- 9. العلامات الحيوية -->
     <section>
       <h2><span class="ico">📊</span> علامات حيوية</h2>
       <table>
@@ -286,18 +345,18 @@ function googleTranslateElementInit() {
       </table>
     </section>
 
-    <!-- 8. تواصل -->
+    <!-- 10. تواصل -->
     <section>
       <h2><span class="ico">📝</span> تواصل</h2>
       <form class="contact-form" onsubmit="sendMessage(event)">
-        <label>الاسم</label><input type="text" id="cName" required style="width:100%; padding:8px; margin-bottom:8px; border-radius:8px; border:1px solid #ccc;">
-        <label>البريد</label><input type="email" id="cEmail" required style="width:100%; padding:8px; margin-bottom:8px; border-radius:8px; border:1px solid #ccc;">
-        <label>الرسالة</label><textarea id="cMsg" required rows="3" style="width:100%; padding:8px; margin-bottom:8px; border-radius:8px; border:1px solid #ccc;"></textarea>
+        <input type="text" id="cName" required placeholder="الاسم" style="width:100%; padding:8px; margin-bottom:8px; border-radius:8px; border:1px solid #ccc;">
+        <input type="email" id="cEmail" required placeholder="البريد" style="width:100%; padding:8px; margin-bottom:8px; border-radius:8px; border:1px solid #ccc;">
+        <textarea id="cMsg" required rows="3" placeholder="الرسالة" style="width:100%; padding:8px; margin-bottom:8px; border-radius:8px; border:1px solid #ccc;"></textarea>
         <button type="submit" style="background:var(--sky-blue-dark); color:white; border:none; padding:10px; border-radius:8px; cursor:pointer; width:100%;">إرسال</button>
       </form>
     </section>
 
-    <!-- 9. روابط -->
+    <!-- 11. روابط -->
     <section>
       <h2><span class="ico">🔗</span> روابط</h2>
       <div class="social-grid">
@@ -310,7 +369,7 @@ function googleTranslateElementInit() {
       </div>
     </section>
 
-    <!-- 10. الآلة الحاسبة (الأسفل) -->
+    <!-- 12. الآلة الحاسبة -->
     <section class="full-width">
       <h2><span class="ico">🧮</span> آلة حاسبة</h2>
       <div class="calc-container">
@@ -360,6 +419,34 @@ function initApp() {
   updateClock(); setInterval(updateClock, 1000);
   changeAthkar(); setInterval(changeAthkar, 5000);
   renderSubjects(); renderCalendar(); renderTips();
+  checkApiKey();
+}
+
+/* ===================== مفتاح API ===================== */
+function checkApiKey() {
+  const key = localStorage.getItem('geminiApiKey');
+  if (key) {
+    document.getElementById('apiKeyBox').style.display = 'none';
+  } else {
+    document.getElementById('apiKeyBox').style.display = 'block';
+  }
+}
+
+function saveApiKey() {
+  const key = document.getElementById('apiKeyInput').value.trim();
+  if (key.length < 10) { alert('يرجى إدخال مفتاح صالح.'); return; }
+  localStorage.setItem('geminiApiKey', key);
+  document.getElementById('apiKeyBox').style.display = 'none';
+  alert('تم حفظ المفتاح بنجاح! يمكنك الآن رفع ملف PDF.');
+}
+
+function checkApiKeyBeforeUpload() {
+  const key = localStorage.getItem('geminiApiKey');
+  if (!key) {
+    alert('يرجى إدخال مفتاح Gemini API أولاً في الصندوق الأصفر.');
+    return;
+  }
+  document.getElementById('fileInput').click();
 }
 
 /* ===================== الأذكار والساعة ===================== */
@@ -380,7 +467,7 @@ function updateClock() {
   document.getElementById('clock-city').textContent = '📍 ' + (Intl.DateTimeFormat().resolvedOptions().timeZone || 'الجزائر');
 }
 
-/* ===================== العداد (Gauge) ===================== */
+/* ===================== العداد ===================== */
 const subjects = [
   { id: 'semiologie', name: 'Sémiologie', emoji: '🩺' }, { id: 'physio', name: 'Physio', emoji: '🫀' },
   { id: 'pathologie', name: 'Pathologie', emoji: '🦠' }, { id: 'biochimie', name: 'Biochimie', emoji: '🧪' },
@@ -563,106 +650,227 @@ function calcEqual() {
   } catch (e) { calcCurrent = 'خطأ'; updateCalcScreen(); setTimeout(calcClear, 1500); }
 }
 
-/* ===================== الكويز التفاعلي (قراءة الـ PDF) ===================== */
-async function generateQuiz(event) {
+/* ===================== حاسبة المعدل ===================== */
+function calcAverage() {
+  let n1 = parseFloat(document.getElementById('note1').value) || 0;
+  let c1 = parseFloat(document.getElementById('coef1').value) || 0;
+  let n2 = parseFloat(document.getElementById('note2').value) || 0;
+  let c2 = parseFloat(document.getElementById('coef2').value) || 0;
+  
+  if (c1 + c2 === 0) { document.getElementById('avgResult').textContent = 'أدخل المعاملات'; return; }
+  let avg = ((n1 * c1) + (n2 * c2)) / (c1 + c2);
+  document.getElementById('avgResult').textContent = `المعدل: ${avg.toFixed(2)}`;
+}
+
+/* ===================== مؤقت بومودورو ===================== */
+let pomodoroTime = 25 * 60;
+let pomodoroInterval = null;
+let isRunning = false;
+
+function updatePomodoroDisplay() {
+  const m = Math.floor(pomodoroTime / 60);
+  const s = pomodoroTime % 60;
+  document.getElementById('pomodoroDisplay').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function togglePomodoro() {
+  if (isRunning) {
+    clearInterval(pomodoroInterval);
+    document.getElementById('pomodoroBtn').textContent = 'استئناف';
+    document.getElementById('pomodoroBtn').style.background = 'var(--green)';
+  } else {
+    pomodoroInterval = setInterval(() => {
+      pomodoroTime--;
+      updatePomodoroDisplay();
+      if (pomodoroTime <= 0) {
+        clearInterval(pomodoroInterval);
+        isRunning = false;
+        alert('انتهى الوقت! خذ استراحة.');
+        resetPomodoro();
+      }
+    }, 1000);
+    document.getElementById('pomodoroBtn').textContent = 'إيقاف مؤقت';
+    document.getElementById('pomodoroBtn').style.background = 'var(--orange)';
+  }
+  isRunning = !isRunning;
+}
+
+function resetPomodoro() {
+  clearInterval(pomodoroInterval);
+  isRunning = false;
+  pomodoroTime = 25 * 60;
+  updatePomodoroDisplay();
+  document.getElementById('pomodoroBtn').textContent = 'بدء';
+  document.getElementById('pomodoroBtn').style.background = 'var(--green)';
+}
+
+/* ===================== الكويز الذكي (Gemini AI) ===================== */
+let currentQuizData = [];
+let currentQuestionIndex = 0;
+let score = 0;
+let answered = false;
+
+async function generateAIQuiz(event) {
   const file = event.target.files[0];
   if (!file) return;
 
   const quizSection = document.getElementById('quizSection');
   const quizContent = document.getElementById('quizContent');
-  const fileList = document.getElementById('fileList');
+  const quizResult = document.getElementById('quizResult');
+  const quizNextBtn = document.getElementById('quizNextBtn');
   
-  fileList.innerHTML = `<div class="file-item"><span>📄 ${file.name}</span></div>`;
-  document.getElementById('quizFileName').textContent = file.name;
   quizSection.style.display = 'block';
+  quizResult.style.display = 'none';
+  quizNextBtn.style.display = 'none';
   quizContent.innerHTML = '<p style="text-align:center; color:var(--sky-blue-dark); font-weight:bold;">⏳ جاري قراءة الملف واستخراج النص...</p>';
-
-  const numQuestions = parseInt(document.getElementById('numQuestions').value) || 3;
+  
+  document.getElementById('quizFileName').textContent = file.name;
 
   try {
-    // قراءة الملف
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
     let fullText = '';
+    const maxPages = Math.min(pdf.numPages, 3);
 
-    // استخراج النص من كل صفحة (بحد أقصى 5 صفحات لتسريع العملية)
-    const maxPages = Math.min(pdf.numPages, 5);
     for (let i = 1; i <= maxPages; i++) {
       const page = await pdf.getPage(i);
       const textContent = await page.getTextContent();
-      const pageText = textContent.items.map(item => item.str).join(' ');
-      fullText += pageText + ' ';
+      fullText += textContent.items.map(item => item.str).join(' ') + ' ';
     }
 
-    // تنظيف النص وتقسيمه لكلمات
-    const words = fullText.replace(/[^\u0600-\u06FFa-zA-Z\s]/g, '').split(/\s+/).filter(w => w.length > 3);
-    
-    if (words.length < 10) {
-      quizContent.innerHTML = '<p style="color:red; text-align:center;">⚠️ الملف لا يحتوي على نص كافٍ. (قد يكون الملف عبارة عن صور ممسوحة ضوئياً).</p>';
+    if (fullText.length < 50) {
+      quizContent.innerHTML = '<p style="color:red; text-align:center;">⚠️ الملف لا يحتوي على نص كافٍ (قد يكون صوراً).</p>';
       return;
     }
 
-    // سحب كلمات عشوائية لتكون الإجابات الصحيحة
-    const uniqueWords = [...new Set(words)];
-    const shuffledWords = uniqueWords.sort(() => 0.5 - Math.random());
+    quizContent.innerHTML = '<p style="text-align:center; color:var(--sky-blue-dark); font-weight:bold;">🧠 الذكاء الاصطناعي يقوم بتوليد الأسئلة... (قد يستغرق 10 ثوانٍ)</p>';
     
-    // توليد الأسئلة
-    let quizHTML = '';
-    for (let i = 0; i < numQuestions; i++) {
-      if (!shuffledWords[i]) break;
-      
-      const correctAnswer = shuffledWords[i];
-      
-      // توليد 4 إجابات خاطئة عشوائية
-      let wrongAnswers = [];
-      while (wrongAnswers.length < 4) {
-        const randomWord = uniqueWords[Math.floor(Math.random() * uniqueWords.length)];
-        if (randomWord !== correctAnswer && !wrongAnswers.includes(randomWord)) {
-          wrongAnswers.push(randomWord);
-        }
+    const numQ = document.getElementById('numQuestions').value || 5;
+    const apiKey = localStorage.getItem('geminiApiKey');
+    
+    const prompt = `أنت أستاذ طب. اقرأ النص التالي واستخرج منه ${numQ} أسئلة طبية متعددة الخيارات.
+    يجب أن يكون لكل سؤال 4 خيارات، خيار واحد فقط صحيح.
+    أريد تبريراً قصيراً للإجابة الصحيحة وتبريراً للإجابات الخاطئة.
+    أريد الإخراج بصيغة JSON فقط بهذا الشكل (بدون أي نص إضافي قبل أو بعد الـ JSON):
+    [
+      {
+        "question": "نص السؤال",
+        "options": ["خيار1", "خيار2", "خيار3", "خيار4"],
+        "correctIndex": 0, 
+        "explanation": "شرح الإجابة الصحيحة والخاطئة"
       }
+    ]
+    النص: ${fullText.substring(0, 5000)}`;
 
-      // دمج الإجابات وخلطها
-      const allOptions = [correctAnswer, ...wrongAnswers].sort(() => 0.5 - Math.random());
+    // طلب من Gemini API
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+    });
 
-      // بناءً على الكلمة، نصنع سؤالاً
-      quizHTML += `
-        <div class="quiz-question" style="margin-top:20px;">سؤال ${i+1}: أي من هذه الكلمات وردت في الملف؟ (الكلمة الصحيحة هي "${correctAnswer.substring(0,2)}...")</div>
-        <div class="quiz-options">
-      `;
-      
-      allOptions.forEach(opt => {
-        const isCorrect = opt === correctAnswer;
-        quizHTML += `<button onclick="checkAnswer(this, ${isCorrect})">${opt}</button>`;
-      });
-      
-      quizHTML += `</div>`;
+    const data = await response.json();
+    
+    if (data.error) {
+      quizContent.innerHTML = `<p style="color:red; text-align:center;">❌ خطأ من Gemini: ${data.error.message}</p>`;
+      return;
     }
 
-    quizContent.innerHTML = quizHTML;
+    let jsonText = data.candidates[0].content.parts[0].text;
+    
+    // تنظيف النص من أي علامات Markdown
+    jsonText = jsonText.replace(/```json/g, '').replace(/```/g, '').trim();
+    
+    // محاولة قراءة JSON
+    currentQuizData = JSON.parse(jsonText);
+    
+    currentQuestionIndex = 0;
+    score = 0;
+    showQuestion();
 
   } catch (error) {
     console.error(error);
-    quizContent.innerHTML = '<p style="color:red; text-align:center;">❌ حدث خطأ أثناء معالجة الملف. تأكد من أنه ملف PDF صالح.</p>';
+    quizContent.innerHTML = '<p style="color:red; text-align:center;">❌ حدث خطأ في الاتصال أو في صيغة الملف.</p>';
   }
 }
 
-function checkAnswer(btn, isCorrect) {
-  const parent = btn.parentElement;
-  if (parent.classList.contains('answered')) return;
-  parent.classList.add('answered');
+function showQuestion() {
+  answered = false;
+  const quizContent = document.getElementById('quizContent');
+  const quizExplanation = document.getElementById('quizExplanation');
+  const quizNextBtn = document.getElementById('quizNextBtn');
   
-  const options = parent.querySelectorAll('button');
-  options.forEach(b => b.disabled = true);
+  quizExplanation.style.display = 'none';
+  quizNextBtn.style.display = 'none';
   
-  if (isCorrect) {
-    btn.classList.add('correct');
-  } else {
-    btn.classList.add('wrong');
-    options.forEach(b => {
-      if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
-    });
+  if (currentQuestionIndex >= currentQuizData.length) {
+    showResult();
+    return;
   }
+
+  const q = currentQuizData[currentQuestionIndex];
+  document.getElementById('quizProgress').textContent = `السؤال ${currentQuestionIndex + 1} من ${currentQuizData.length}`;
+
+  let html = `<div class="quiz-question">${q.question}</div><div class="quiz-options">`;
+  q.options.forEach((opt, i) => {
+    html += `<button onclick="checkAnswer(${i})">${opt}</button>`;
+  });
+  html += `</div>`;
+  quizContent.innerHTML = html;
+}
+
+function checkAnswer(selectedIndex) {
+  if (answered) return;
+  answered = true;
+
+  const q = currentQuizData[currentQuestionIndex];
+  const buttons = document.querySelectorAll('.quiz-options button');
+  
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.correctIndex) btn.classList.add('correct');
+    if (i === selectedIndex && i !== q.correctIndex) btn.classList.add('wrong');
+  });
+
+  if (selectedIndex === q.correctIndex) score++;
+
+  const explDiv = document.getElementById('quizExplanation');
+  explDiv.innerHTML = `<strong>💡 تبرير الإجابة:</strong> ${q.explanation}`;
+  explDiv.style.display = 'block';
+
+  const nextBtn = document.getElementById('quizNextBtn');
+  nextBtn.style.display = 'block';
+  if (currentQuestionIndex === currentQuizData.length - 1) {
+    nextBtn.textContent = 'عرض النتيجة 🎉';
+  }
+}
+
+function nextQuestion() {
+  currentQuestionIndex++;
+  showQuestion();
+}
+
+function showResult() {
+  document.getElementById('quizContent').innerHTML = '';
+  document.getElementById('quizExplanation').style.display = 'none';
+  document.getElementById('quizNextBtn').style.display = 'none';
+  
+  const resultDiv = document.getElementById('quizResult');
+  resultDiv.style.display = 'block';
+  
+  document.getElementById('finalScore').textContent = `${score} / ${currentQuizData.length}`;
+  const percent = (score / currentQuizData.length) * 100;
+  let msg = "";
+  if (percent >= 80) msg = "ممتاز! أنت جاهز للامتحان. 🌟";
+  else if (percent >= 50) msg = "جيد جداً، تحتاج لمراجعة بعض النقاط. 👍";
+  else msg = "تحتاج إلى مراجعة الملف مرة أخرى. 📚";
+  document.getElementById('finalMessage').textContent = msg;
+}
+
+function resetQuiz() {
+  document.getElementById('quizSection').style.display = 'none';
+  document.getElementById('fileInput').value = '';
+  document.getElementById('fileList').innerHTML = '';
 }
 
 /* ===================== نموذج التواصل ===================== */
